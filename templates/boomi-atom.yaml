@@ -1,8 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Boomi Atom Installation Script. This creates a VPC, one Public Subnet and one Private subnet for staging an Atom.
+Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and Private Subnets, and stages a Dell Boomi Atom.
 
 Parameters:
-
   KeyName:
     Description: Keyname for access to EC2 Instances
     Type: AWS::EC2::KeyPair::KeyName
@@ -17,6 +16,11 @@ Parameters:
       - m5.xlarge
       - r4.xlarge
       - r5.xlarge
+
+  InstanceVolumeSize:
+     Description: Atom Volume Size (In GiB)
+     Type: Number
+     Default: 100
 
   OS:
     Description: Choose an Operating System for your Boomi Instance
@@ -39,32 +43,27 @@ Parameters:
     Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
     Type: String
     Default: 172.30.1.0/28
-
   PublicSubnet2CIDR:
     Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
     Type: String
     Default: 172.30.1.16/28
-
   PublicSubnet3CIDR:
-      Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
-      Type: String
-      Default: 172.30.1.32/28
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 172.30.1.32/28
 
   PrivateSubnet1CIDR:
-      Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-      Type: String
-      Default: 172.30.5.0/24
-
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 172.30.5.0/24
   PrivateSubnet2CIDR:
-      Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-      Type: String
-      Default: 172.30.6.0/24
-
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 172.30.6.0/24
   PrivateSubnet3CIDR:
-      Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-      Type: String
-      Default: 172.30.7.0/24
-
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 172.30.7.0/24
   Vusername:
     Description: Please enter your Boomi User Name
     Type: String
@@ -82,36 +81,6 @@ Parameters:
      Description: Please enter a name for your Boomi Instance
      Type: String
      Default: atom1
-
-  Encryption:
-     Description: EFS volumes can be encrypted. Please select either "yes" or "no"
-     Type: String
-     Default: yes
-     AllowedValues:
-       - yes
-       - no
-
-  PerformanceMode:
-     Description: Choose a performance mode for your EFS volume
-     Type: String
-     Default: generalPurpose
-     AllowedValues:
-        - generalPurpose
-        - maxIO
-
-  ProvisionedThroughputInMibps:
-     Description: Select the Provisioned Throughput value for your EFS volume
-     Type: Number
-     Default: 10
-
-  ThroughputMode:
-     Description: Select the throughput mode for your EFS Volume
-     Type: String
-     Default: provisioned
-     AllowedValues:
-        - provisioned
-        - bursting
-
 
 Metadata: 
   AWS::CloudFormation::Interface: 
@@ -135,14 +104,7 @@ Metadata:
           - InstanceType
           - KeyName
           - OS
-      -
-        Label:
-          default: "Amazon EFS Configuration"
-        Parameters:
-          - Encryption
-          - PerformanceMode
-          - ThroughputMode
-          - ProvisionedThroughputInMibps
+          - InstanceVolumeSize
       -
         Label:
           default: "Dell Boomi Atom Configuration"
@@ -153,9 +115,6 @@ Metadata:
          - Vpassword
          - dir
 
-    ParameterLabels: 
-      VPCID: 
-        default: "Which VPC should this be deployed to?"
 
 Mappings:
   RegionMap:
@@ -202,8 +161,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
-
+          Value: !Sub ${EnvironmentName} Public Subnet
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -215,8 +173,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
-
+          Value: !Sub ${EnvironmentName} Public Subnet
   PublicSubnet3:
     Type: AWS::EC2::Subnet
     Properties:
@@ -228,8 +185,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
-
+          Value: !Sub ${EnvironmentName} Public Subnet 	  
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -241,8 +197,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
-
+          Value: !Sub ${EnvironmentName} Private Subnet
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -254,8 +209,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
-
+          Value: !Sub ${EnvironmentName} Private Subnet
   PrivateSubnet3:
     Type: AWS::EC2::Subnet
     Properties:
@@ -267,9 +221,8 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+          Value: !Sub ${EnvironmentName} Private Subnet
 
- 
   NatGateway1EIP:
       Type: AWS::EC2::EIP
       DependsOn: InternetGatewayAttachment
@@ -355,13 +308,20 @@ Resources:
        - Ref: OS
       InstanceType:
         Ref: InstanceType
+      BlockDeviceMappings: 
+       - DeviceName: "/dev/xvda"
+         Ebs: 
+          VolumeType: "gp2"
+          DeleteOnTermination: "false"
+          VolumeSize:
+            Ref: "InstanceVolumeSize"
+
       UserData:
        Fn::Base64: !Sub |
 
              #!/bin/bash -x
              yum update -y
              yum install java-1.8.0-openjdk -y
-             yum install -y amazon-efs-utils
              echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> /home/ec2-user/.bash_profile
              echo "export PATH=$JAVA_HOME/bin:$PATH >> /home/ec2-user/.bash_profile"
              . ~/.bash_profile
@@ -383,82 +343,11 @@ Resources:
           SubnetId:
             Ref: "PublicSubnet1"
 
-  filesystem:
-    Type: AWS::EFS::FileSystem
-    Properties:
-      Encrypted: !Ref Encryption
-      PerformanceMode: !Ref PerformanceMode
-      ProvisionedThroughputInMibps: !Ref ProvisionedThroughputInMibps
-      ThroughputMode: !Ref ThroughputMode
-      KmsKeyId: !GetAtt 
-        - key
-        - Arn
-  key:
-    Type: AWS::KMS::Key
-    Properties:
-      KeyPolicy:
-        Version: 2012-10-17
-        Id: key-default-1
-        Statement:
-          - Sid: Allow administration of the key
-            Effect: Allow
-            Principal:
-              AWS: !Join 
-                - ''
-                - - 'arn:aws:iam::'
-                  - !Ref 'AWS::AccountId'
-                  - ':root'
-            Action:
-              - 'kms:*'
-            Resource: '*'
-
-  MountTargetSecurityGroup:
-        Type: AWS::EC2::SecurityGroup
-        Properties:
-            GroupDescription: Allow SSH to Bastion Host
-            VpcId:
-                Ref: VPC
-            SecurityGroupIngress:
-              - IpProtocol: tcp
-                FromPort: '22'
-                ToPort: '22'
-                CidrIp: !Ref PrivateSubnet1CIDR
-            SecurityGroupEgress:
-              - IpProtocol: -1
-                CidrIp: 0.0.0.0/0
-            Tags:
-              - Key: Name
-                Value: Boomi Instance Security Group
-MountTarget: 
-  Type: AWS::EFS::MountTarget
-  Properties: 
-    FileSystemId: 
-      Ref: "filesystem"
-    SubnetId: 
-      Ref: PrivateSubnet1
-    SecurityGroups: 
-      - 
-        Ref: "MountTargetSecurityGroup"
-
 Outputs:
 
   VPC:
     Description: The VPC
     Value: !Ref VPC
-
-  PublicSubnets:
-    Description: Public Subnets
-    Value: !Ref PublicSubnet1
-
-  PrivateSubnets:
-     Description: A list of the private subnets
-     Value: !Ref PrivateSubnet1
-
   InstanceID:
     Description: The Instance ID of the Bastion Bastion Host
     Value: !Ref Ec2Instance
-
-  KeyId:
-    Value: !GetAtt 
-      - key
-      - Arn
