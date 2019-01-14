@@ -1,11 +1,23 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and Private Subnets, and stages a Dell Boomi Atom.
+
 Parameters:
-  KeyName:
+  KeyPairName:
     Description: Keyname for access to EC2 Instances
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing Keyname
-  AtomInstanceType:
+  BastionInstanceType:
+   Description: Bastion Host for AWS environment
+   Type: String
+   Default: t3.medium
+   AllowedValues:
+       - t2.medium
+       - t2.large
+       - t3.medium
+       - t3.large
+  BastionSecurityGroupID:
+    Type: String
+  InstanceType:
     Description: Boomi Host Instance Type
     Type: String
     Default: m5.xlarge
@@ -14,59 +26,58 @@ Parameters:
       - m5.xlarge
       - r4.xlarge
       - r5.xlarge
-  AtomInstanceVolumeSize:
-     Description: Atom Volume Size (In GiB)
+      - c5.xlarge
+  BoomiInstanceVolumeSize:
+     Description: Atom Volume Size (In GiB). Size from 1GiB - 16TiB
      Type: Number
      Default: 100
   EnvironmentName:
     Description: A Name that will be prefixed to resource names
     Type: String
     Default: Boomi
-  VPCCIDR:
-    Description: Please enter the IP Range (CIDR notation) for this VpcCIDR
-    Type: String
-    Default: 172.30.0.0/16
-  PublicSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.1.0/28
-  PublicSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.1.16/28
-  PublicSubnet3CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.1.32/28
-  PrivateSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.5.0/24
-  PrivateSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.6.0/24
-  PrivateSubnet3CIDR:
-    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-    Type: String
-    Default: 172.30.7.0/24
-  BoomiUserName:
+  VPCID:
+    Description: Select the VPC to deploy into.
+    Type: AWS::EC2::VPC::Id
+  PublicSubnet1ID:
+    Description: Public Subnet ID 1 located in Availability Zone 1
+    Type: AWS::EC2::Subnet::Id
+  PublicSubnet2ID:
+    Description: Public Subnet ID 2 located in Availability Zone 2
+    Type: AWS::EC2::Subnet::Id
+  PrivateSubnet1ID:
+    Description: Private Subnet ID 1 located in Availability Zone 1
+    Type: AWS::EC2::Subnet::Id
+  PrivateSubnet2ID:
+    Description: Private Subnet ID 2 located in Availability Zone 2
+    Type: AWS::EC2::Subnet::Id
+  BoomiUsername:
     Description: Please enter your Boomi User Name
     Type: String
   BoomiPassword:
      Description: Please enter your Boomi Account Password
      Type: String
+     NoEcho: true
   BoomiAccountID:
      Description: Please enter your Boomi Account ID
      Type: String
-  InstallDirectory:
-     Description: Please enter an install InstallDirectoryectory for Boomi
+  dir:
+     Description: Please enter an install directory for Boomi
      Type: String
-     Default: /usr/local/boomi
-  AtomInstanceName:
+     Default: /opt/boomi/
+
+  AtomName:
      Description: Please enter a name for your Boomi Instance
      Type: String
      Default: atom1
+  LoadBalancerName:
+    Description: The name of the Load Balancer
+    Type: String
+    Default: Boomi-LB
+  AutoScalingGroupName:
+      Description: The name of the AutoScaling Group
+      Type: String
+      Default: Boomi-ASG
+
 Metadata: 
   AWS::CloudFormation::Interface: 
     ParameterGroups: 
@@ -75,63 +86,83 @@ Metadata:
           default: "Network Configuration"
         Parameters:
          - EnvironmentName
-         - VPCCIDR
-         - PublicSubnet1CIDR
-         - PublicSubnet2CIDR
-         - PublicSubnet3CIDR
-         - PrivateSubnet1CIDR
-         - PrivateSubnet2CIDR
-         - PrivateSubnet3CIDR
+         - VPCID
+         - PublicSubnet1ID
+         - PublicSubnet2ID
+         - PrivateSubnet1ID
+         - PrivateSubnet2ID
       - 
         Label: 
           default: "Amazon EC2 Configuration"
-        Parameters: 
-          - AtomInstanceType
-          - KeyName
-          - OS
-          - AtomInstanceVolumeSize
+        Parameters:
+          - BastionInstanceType 
+          - InstanceType
+          - KeyPairName
+          - BoomiInstanceVolumeSize
+          - LoadBalancerName
+          - AutoScalingGroupName
       -
         Label:
           default: "Dell Boomi Atom Configuration"
         Parameters:
-         - AtomInstanceName
+         - AtomName
          - BoomiAccountID
-         - BoomiUserName
+         - BoomiUsername
          - BoomiPassword
-         - InstallDirectory
+         - dir
 Mappings:
   AWSAMIRegionMap:
     AMI:
-      AMZNLINUXHVM: amzn-ami-hvm-2018.03.0.20180811-x86_64-gp2
+      AMZNLINUXHVM: amzn-ami-hvm-2018.03.0.20181129-x86_64-gp2
     us-east-1:
       AMZNLINUXHVM: ami-0ff8a91507f77f867
     us-west-2:
-      AMZNLINUXHVM": ami-0b59bfac6be064b78
+      AMZNLINUXHVM: ami-a0cfeed8
+
 Resources:
+  LoadBalancerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: boomi-elb
+      VpcId: !Ref VPCID
+      Tags:
+        - Key: Name
+          Value: LoadBalancerSG
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          FromPort: 9090
+          IpProtocol: tcp
+          ToPort: 9090
+
   BoomiSecurityGroup:
-        Type: AWS::EC2::SecurityGroup
-        Properties:
-            GroupDescription: Allow SSH to Bastion Host
-            VpcId:
-                Ref: VPCID
-            SecurityGroupIngress:
-              - IpProtocol: tcp
-                FromPort: '22'
-                ToPort: '22'
-                CidrIp: 0.0.0.0/0
-            SecurityGroupEgress:
-              - IpProtocol: -1
-                CidrIp: 0.0.0.0/0
-            Tags:
-              - Key: Name
-                Value: Boomi Instance Security Group
-  AtomInstance:
-    Type: "AWS::EC2::Instance"
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: boomi
+      VpcId: !Ref VPCID
+      Tags:
+        - Key: Name
+          Value: BoomiSG
+      SecurityGroupIngress:
+        - FromPort: 22
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref BastionSecurityGroupID
+          ToPort: 22
+        - FromPort: 9090
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+          ToPort: 9090
+
+  LaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
     Properties:
       ImageId: !FindInMap
-       - AWSAMIRegionMap
-       - Ref: AWS::Region
-       - Ref: AMZNLINUXHVM
+        - AWSAMIRegionMap
+        - Ref: AWS::Region
+        - AMZNLINUXHVM
       InstanceType:
         Ref: InstanceType
       BlockDeviceMappings: 
@@ -140,50 +171,72 @@ Resources:
           VolumeType: "gp2"
           DeleteOnTermination: "false"
           VolumeSize:
-            Ref: "AtomInstanceVolumeSize"
+            Ref: "BoomiInstanceVolumeSize"
+      SecurityGroups:
+       - !Ref BoomiSecurityGroup
+      KeyName:
+        Ref: KeyPairName
+
       UserData:
        Fn::Base64: !Sub |
-             #!/bin/bash -ex
-             yum install -y python-setuptools
-             yum install -y wget
-             mkdir -p /opt/aws/bin
-             wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-             easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AtomInstance --configsets quickstart --region ${AWS::Region}
-             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
-      KeyName:
-        Ref: KeyName
-      NetworkInterfaces:
-        - AssociatePublicIpAddress: "true"
-          DeviceIndex: "0"
-          GroupSet:
-            - Ref: "BoomiSecurityGroup"
-          SubnetId:
-            Ref: "PublicSubnet1"
-    Metadata:
-      AWS::CloudFormation::Init:
-        configSets:
-          quickstart:
-            - create_structure
-            - install_boomi_atom
-            - verify_boomi_running
-        create_structure:
-          commands:
-            01_create_boomi_installdir:
-              command: mkdir -p /usr/local/boomi
-        install_boomi_atom:
-          commands:
-            01_fetch_install_script:
-              command: wget -O /root/boomi-atom-installer.sh https://platform.boomi.com/atom/atom_install64.sh
-            02_fix_permissions:
-              command: chmod +x /root/boomi-atom-installer.sh
-            03_run_installer:
-              commmand: !Sub |
-                "/root/boomi-atom-installer.sh  -q console -Vusername=${BoomiUserName} -Vpassword=${BoomiPassword}  -AtomInstanceName=${AtomInstanceName} -BoomiAccountID=${BoomiAccountID} -InstallDirectory=${InstallDirectory}"
-        verify_boomi_running:
-          commands:
-            (...)
+
+        #!/bin/bash -x
+          yum update -y
+          yum install java-1.8.0-openjdk -y
+          echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> /home/ec2-user/.bash_profile
+          echo export PATH=$JAVA_HOME/bin:$PATH >> /home/ec2-user/.bash_profile
+          . ~/.bash_profile
+          cd /usr/local
+          sudo mkdir boomi
+          sudo chown ec2-user:ec2-user boomi
+          cd /usr/local/boomi
+          wget https://platform.boomi.com/atom/atom_install64.sh
+          chmod +x atom_install64.sh
+          sudo mkdir ${dir}
+          sudo chown ec2-user:ec2-user ${dir}
+          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountIDId=${BoomiAccountIDId} -dir ${dir}
+
+  AutoScaling:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      AutoScalingGroupName:
+          Ref: AutoScalingGroupName
+      VPCZoneIdentifier:
+      - Ref: PrivateSubnet1ID
+      - Ref: PrivateSubnet2ID
+      LaunchConfigurationName: !Ref LaunchConfiguration
+      MinSize: '1'
+      MaxSize: '1'
+      DesiredCapacity: '1'
+      Cooldown: '300'
+      HealthCheckGracePeriod: '300'
+      HealthCheckType: ELB
+      LoadBalancerNames: [ Ref: ElasticLoadBalancer ]
+      Tags:
+        - PropagateAtLaunch: 'true'
+          Value: Boomi
+          Key: Name
+
+  ElasticLoadBalancer:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      Subnets:
+      - Ref: PublicSubnet1ID
+      - Ref: PublicSubnet2ID
+      CrossZone: 'true'
+      Listeners:
+      - LoadBalancerPort: '22'
+        InstancePort: '22'
+        Protocol: TCP
+      HealthCheck:
+        Target: TCP:22
+        HealthyThreshold: '3'
+        UnhealthyThreshold: '5'
+        Interval: '30'
+        Timeout: '5'
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+
+
 Outputs:
-  InstanceID:
-    Description: The Instance ID of the Bastion Bastion Host
-    Value: !Ref AtomInstance
+  
