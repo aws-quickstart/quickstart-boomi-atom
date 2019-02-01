@@ -6,17 +6,6 @@ Parameters:
     Description: Keyname for access to EC2 Instances
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing Keyname
-  BastionInstanceType:
-   Description: Bastion Host for AWS environment
-   Type: String
-   Default: t3.medium
-   AllowedValues:
-       - t2.medium
-       - t2.large
-       - t3.medium
-       - t3.large
-  BastionSecurityGroupID:
-    Type: String
   InstanceType:
     Description: Boomi Host Instance Type
     Type: String
@@ -30,11 +19,6 @@ Parameters:
   BoomiInstanceVolumeSize:
      Description: Atom Volume Size (In GiB). Size from 1GiB - 16TiB
      Type: Number
-     Default: 100
-  EnvironmentName:
-    Description: A Name that will be prefixed to resource names
-    Type: String
-    Default: Boomi
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
@@ -120,7 +104,6 @@ Metadata:
         Label:
           default: "Network Configuration"
         Parameters:
-         - EnvironmentName
          - VPCCIDR
          - PublicSubnet1CIDR
          - PublicSubnet2CIDR
@@ -131,7 +114,6 @@ Metadata:
         Label:
           default: "Amazon EC2 Configuration"
         Parameters:
-          - BastionInstanceType
           - InstanceType
           - KeyPairName
           - BoomiInstanceVolumeSize
@@ -157,6 +139,7 @@ Resources:
       Parameters:
         AvailabilityZones: !Join [ ',', !Ref 'AvailabilityZones' ]
         NumberOfAZs: '2'
+        VPCCIDR: !Ref VPCCIDR
         PrivateSubnet1ACIDR: !Ref PrivateSubnet1CIDR
         PrivateSubnet2ACIDR: !Ref PrivateSubnet2CIDR
         PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
@@ -164,7 +147,7 @@ Resources:
   BastionStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion.template"
+      TemplateURL: !Sub "https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion.template"
       Parameters:
         BastionAMIOS: 'Amazon-Linux-HVM'
         KeyPairName: !Ref 'KeyPairName'
@@ -183,7 +166,7 @@ Resources:
   BoomiAtomStack:
       Type: AWS::CloudFormation::Stack
       Properties:
-        TemplateURL: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}/templates/boomi-atom.yaml'
+        TemplateURL: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}/templates/boomi-atom.template.yaml'
         Parameters:
           PublicSubnet1ID: !GetAtt
             - VPCStack
@@ -205,3 +188,5 @@ Resources:
           BastionSecurityGroupID: !GetAtt
             - BastionStack
             - Outputs.BastionSecurityGroupID
+          InstanceType: !Ref InstanceType
+          BoomiInstanceVolumeSize: !Ref BoomiInstanceVolumeSize
