@@ -60,7 +60,7 @@ Parameters:
   BoomiAccountID:
      Description: Please enter your Boomi Account ID
      Type: String
-  dir:
+  BoomiInstallDir:
      Description: Please enter an install directory for Boomi
      Type: String
      Default: /opt/boomi/
@@ -69,20 +69,12 @@ Parameters:
      Description: Please enter a name for your Boomi Instance
      Type: String
      Default: atom1
-  LoadBalancerName:
-    Description: The name of the Load Balancer
-    Type: String
-    Default: Boomi-LB
-  AutoScalingGroupName:
-      Description: The name of the AutoScaling Group
-      Type: String
-      Default: Boomi-ASG
 
-Metadata: 
-  AWS::CloudFormation::Interface: 
-    ParameterGroups: 
-      - 
-        Label: 
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
           default: "Network Configuration"
         Parameters:
          - EnvironmentName
@@ -91,16 +83,14 @@ Metadata:
          - PublicSubnet2ID
          - PrivateSubnet1ID
          - PrivateSubnet2ID
-      - 
-        Label: 
+      -
+        Label:
           default: "Amazon EC2 Configuration"
         Parameters:
-          - BastionInstanceType 
+          - BastionInstanceType
           - InstanceType
           - KeyPairName
           - BoomiInstanceVolumeSize
-          - LoadBalancerName
-          - AutoScalingGroupName
       -
         Label:
           default: "Dell Boomi Atom Configuration"
@@ -109,7 +99,7 @@ Metadata:
          - BoomiAccountID
          - BoomiUsername
          - BoomiPassword
-         - dir
+         - BoomiInstallDir
 Mappings:
   AWSAMIRegionMap:
     AMI:
@@ -118,16 +108,12 @@ Mappings:
       AMZNLINUXHVM: ami-0ff8a91507f77f867
     us-west-2:
       AMZNLINUXHVM: ami-a0cfeed8
-
 Resources:
   LoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: boomi-elb
       VpcId: !Ref VPCID
-      Tags:
-        - Key: Name
-          Value: LoadBalancerSG
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
           FromPort: 22
@@ -165,9 +151,9 @@ Resources:
         - AMZNLINUXHVM
       InstanceType:
         Ref: InstanceType
-      BlockDeviceMappings: 
+      BlockDeviceMappings:
        - DeviceName: "/dev/xvda"
-         Ebs: 
+         Ebs:
           VolumeType: "gp2"
           DeleteOnTermination: "false"
           VolumeSize:
@@ -176,10 +162,8 @@ Resources:
        - !Ref BoomiSecurityGroup
       KeyName:
         Ref: KeyPairName
-
       UserData:
        Fn::Base64: !Sub |
-
         #!/bin/bash -x
           yum update -y
           yum install java-1.8.0-openjdk -y
@@ -194,13 +178,10 @@ Resources:
           chmod +x atom_install64.sh
           sudo mkdir ${dir}
           sudo chown ec2-user:ec2-user ${dir}
-          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountIDId=${BoomiAccountIDId} -dir ${dir}
-
+          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountId=${BoomiAccountIDId} -dir ${BoomiInstallDir}
   AutoScaling:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
-      AutoScalingGroupName:
-          Ref: AutoScalingGroupName
       VPCZoneIdentifier:
       - Ref: PrivateSubnet1ID
       - Ref: PrivateSubnet2ID
@@ -216,7 +197,6 @@ Resources:
         - PropagateAtLaunch: 'true'
           Value: Boomi
           Key: Name
-
   ElasticLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
@@ -236,7 +216,3 @@ Resources:
         Timeout: '5'
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
-
-
-Outputs:
-  
