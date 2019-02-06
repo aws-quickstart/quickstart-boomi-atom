@@ -215,23 +215,6 @@ Resources:
            easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
-
-#        !Sub |
-#        #!/bin/bash -x
-#          yum update -y
-#          yum install java-1.8.0-openjdk -y
-#          echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> /home/ec2-user/.bash_profile
-#          echo export PATH=$JAVA_HOME/bin:$PATH >> /home/ec2-user/.bash_profile
-#          . ~/.bash_profile
-#          cd /usr/local
-#          sudo mkdir boomi
-#          sudo chown ec2-user:ec2-user boomi
-#          cd /usr/local/boomi
-#          wget https://platform.boomi.com/atom/atom_install64.sh
-#          chmod +x atom_install64.sh
-#          sudo mkdir ${BoomiInstallDir}
-#          sudo chown ec2-user:ec2-user ${BoomiInstallDir}
-#          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
     Metadata:
       AWS::CloudFormation::Init:
         config:
