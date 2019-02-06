@@ -1,6 +1,68 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and Private Subnets, and stages a Dell Boomi Atom.
-
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Network Configuration"
+        Parameters:
+         - VPCID
+         - PublicSubnet1ID
+         - PublicSubnet2ID
+         - PrivateSubnet1ID
+         - PrivateSubnet2ID
+      -
+        Label:
+          default: "Amazon EC2 Configuration"
+        Parameters:
+          - InstanceType
+          - KeyPairName
+          - BoomiInstanceVolumeSize
+      -
+        Label:
+          default: "Dell Boomi Atom Configuration"
+        Parameters:
+         - AtomName
+         - BoomiAccountID
+         - BoomiUsername
+         - BoomiPassword
+         - BoomiInstallDir
+  ParameterLabels:
+      KeyPairName:
+        default: SSH Key Name
+      PrivateSubnet1ID:
+        default: Private Subnet 1 ID
+      PrivateSubnet2ID:
+        default: Private Subnet 2 ID
+      PublicSubnet1ID:
+        default: Public Subnet 1 ID
+      PublicSubnet2ID:
+        default: Public Subnet 2 ID
+      QSS3BucketName:
+        default: Quick Start S3 Bucket Name
+      QSS3KeyPrefix:
+        default: Quick Start S3 Key Prefix
+      RemoteAccessCIDR:
+        default: Allowed External Access CIDR (OCP UI)
+      VPCID:
+        default: VPC ID
+      VPCCIDR:
+        default: VPC CIDR
+      InstanceType:
+        default: Boomi Atom Instance Type
+      BoomiInstanceVolumeSize:
+        default: Volume Size for Boomi Instances
+      AtomName:
+        default: Atom Name
+      BoomiAccountID:
+        default: Boomi Account ID
+      BoomiUsername:
+        default: Boomi Username
+      BoomiPassword:
+        default: Boomi Password
+      BoomiInstallDir:
+        default: Boomi Install Directory
 Parameters:
   KeyPairName:
     Description: Keyname for access to EC2 Instances
@@ -51,48 +113,44 @@ Parameters:
      Description: Please enter an install directory for Boomi
      Type: String
      Default: /opt/boomi/
-
   AtomName:
      Description: Please enter a name for your Boomi Instance
      Type: String
      Default: atom1
-
-Metadata:
-  AWS::CloudFormation::Interface:
-    ParameterGroups:
-      -
-        Label:
-          default: "Network Configuration"
-        Parameters:
-         - VPCID
-         - PublicSubnet1ID
-         - PublicSubnet2ID
-         - PrivateSubnet1ID
-         - PrivateSubnet2ID
-      -
-        Label:
-          default: "Amazon EC2 Configuration"
-        Parameters:
-          - InstanceType
-          - KeyPairName
-          - BoomiInstanceVolumeSize
-      -
-        Label:
-          default: "Dell Boomi Atom Configuration"
-        Parameters:
-         - AtomName
-         - BoomiAccountID
-         - BoomiUsername
-         - BoomiPassword
-         - BoomiInstallDir
 Mappings:
   AWSAMIRegionMap:
     AMI:
       AMZNLINUXHVM: amzn-ami-hvm-2018.03.0.20181129-x86_64-gp2
+    ap-northeast-1:
+        AMZNLINUXHVM: ami-00a5245b4816c38e6
+    ap-northeast-2:
+        AMZNLINUXHVM: ami-00dc207f8ba6dc919
+    ap-south-1:
+        AMZNLINUXHVM: ami-0ad42f4f66f6c1cc9
+    ap-southeast-1:
+        AMZNLINUXHVM: ami-05b3bcf7f311194b3
+    ap-southeast-2:
+        AMZNLINUXHVM: ami-02fd0b06f06d93dfc
+    ca-central-1:
+        AMZNLINUXHVM: ami-07423fb63ea0a0930
+    eu-central-1:
+        AMZNLINUXHVM: ami-0cfbf4f6db41068ac
+    eu-west-1:
+        AMZNLINUXHVM: ami-08935252a36e25f85
+    eu-west-2:
+        AMZNLINUXHVM: ami-01419b804382064e4
+    eu-west-3:
+        AMZNLINUXHVM: ami-0dd7e7ed60da8fb83
+    sa-east-1:
+        AMZNLINUXHVM: ami-05145e0b28ad8e0b2
     us-east-1:
-      AMZNLINUXHVM: ami-0ff8a91507f77f867
+        AMZNLINUXHVM: ami-0080e4c5bc078760e
+    us-east-2:
+        AMZNLINUXHVM: ami-0cd3dfa4e37921605
+    us-west-1:
+        AMZNLINUXHVM: ami-0ec6517f6edbf8044
     us-west-2:
-      AMZNLINUXHVM: ami-a0cfeed8
+        AMZNLINUXHVM: ami-01e24be29428c15b2
 Resources:
   LoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -108,7 +166,6 @@ Resources:
           FromPort: 9090
           IpProtocol: tcp
           ToPort: 9090
-
   BoomiSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -148,22 +205,55 @@ Resources:
       KeyName:
         Ref: KeyPairName
       UserData:
-       Fn::Base64: !Sub |
-        #!/bin/bash -x
-          yum update -y
-          yum install java-1.8.0-openjdk -y
-          echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> /home/ec2-user/.bash_profile
-          echo export PATH=$JAVA_HOME/bin:$PATH >> /home/ec2-user/.bash_profile
-          . ~/.bash_profile
-          cd /usr/local
-          sudo mkdir boomi
-          sudo chown ec2-user:ec2-user boomi
-          cd /usr/local/boomi
-          wget https://platform.boomi.com/atom/atom_install64.sh
-          chmod +x atom_install64.sh
-          sudo mkdir ${BoomiInstallDir}
-          sudo chown ec2-user:ec2-user ${BoomiInstallDir}
-          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
+       Fn::Base64:
+         !Sub |
+           #!/bin/bash -ex
+           yum install -y python-setuptools
+           yum install -y wget
+           mkdir -p /opt/aws/bin
+           wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
+           easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
+           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
+           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
+
+#        !Sub |
+#        #!/bin/bash -x
+#          yum update -y
+#          yum install java-1.8.0-openjdk -y
+#          echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> /home/ec2-user/.bash_profile
+#          echo export PATH=$JAVA_HOME/bin:$PATH >> /home/ec2-user/.bash_profile
+#          . ~/.bash_profile
+#          cd /usr/local
+#          sudo mkdir boomi
+#          sudo chown ec2-user:ec2-user boomi
+#          cd /usr/local/boomi
+#          wget https://platform.boomi.com/atom/atom_install64.sh
+#          chmod +x atom_install64.sh
+#          sudo mkdir ${BoomiInstallDir}
+#          sudo chown ec2-user:ec2-user ${BoomiInstallDir}
+#          ./atom_install64.sh -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          packages:
+            yum:
+              java-1.8.0-openjdk: []
+          sources:
+            /root/atom_install.sh: "https://platform.boomi.com/atom/atom_install64.sh"
+          commands:
+            01_create_boomi_user:
+              command: !Sub "useradd --system boomi -d ${BoomiInstallDir}"
+            02_create_usr_local_boomi:
+              command: "mkdir /usr/local/boomi && chown boomi: /usr/local/boomi"
+            03_setup_boomi_account_env:
+              command: "echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> ~boomi/.bash_profile && echo export PATH=$JAVA_HOME/bin:$PATH >> ~boomi/.bash_profile"
+            04_move_installdir_to_boomi_homedir:
+              command: "mv /root/atom_install.sh ~boomi/atom_install.sh"
+            05_change_perms_installer:
+              command: "chmod +x ~boomi/atom_install.sh"
+            05_run_atom_installer:
+              command: !Sub "runuser -u boomi -c ${BoomiInstallDir}/atom_install.sh  -q console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName} -BoomiAccountId=${BoomiAccountID} -dir ${BoomiInstallDir}"
+
   AutoScaling:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:

@@ -11,16 +11,13 @@ global:
     - ca-central-1
     - eu-central-1
     - eu-west-1
-    - sa-east-1
+ #   - sa-east-1
     - us-east-1
     - us-east-2
     - us-west-1
     - us-west-2
   reporting: true
- 
 tests:
   quickstart-boomi-atom:
     parameter_input: boomi-atom.json
     template_file: boomi-atom-master.template.yaml
-    regions:
-        - us-east-1
