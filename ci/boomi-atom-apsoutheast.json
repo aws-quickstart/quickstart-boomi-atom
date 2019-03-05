@@ -1,0 +1,30 @@
+[
+    {
+        "ParameterKey":"AvailabilityZones",
+        "ParameterValue":"ap-southeast-2c"
+    },
+    {
+        "ParameterKey":"BoomiUsername",
+        "ParameterValue":"override"
+    },
+    {
+        "ParameterKey":"BoomiPassword",
+        "ParameterValue":"override"
+    },
+    {
+        "ParameterKey":"BoomiAccountID",
+        "ParameterValue":"override"
+    },
+    {
+        "ParameterKey":"QSS3BucketName",
+        "ParameterValue":"$[taskcat_autobucket]"
+    },
+    {
+        "ParameterKey":"RemoteAccessCIDR",
+        "ParameterValue":"0.0.0.0/0"
+    },
+    {
+        "ParameterKey":"KeyPairName",
+        "ParameterValue":"override"
+    }
+]

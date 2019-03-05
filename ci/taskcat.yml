@@ -7,7 +7,7 @@ global:
     - ap-northeast-2
     - ap-south-1
     - ap-southeast-1
-    - ap-southeast-2
+#   - ap-southeast-2
     - ca-central-1
     - eu-central-1
     - eu-west-1
@@ -21,3 +21,8 @@ tests:
   quickstart-boomi-atom:
     parameter_input: boomi-atom.json
     template_file: boomi-atom-master.template.yaml
+  quickstart-boomi-atom:
+    parameter_input: boomi-atom-apsoutheast.json
+    template_file: boomi-atom-master.template.yaml
+    regions:
+      - ap-southeast-2
