@@ -28,41 +28,41 @@ Metadata:
          - BoomiUsername
          - BoomiPassword
          - BoomiInstallDir
-  ParameterLabels:
-      KeyPairName:
-        default: SSH Key Name
-      PrivateSubnet1ID:
-        default: Private Subnet 1 ID
-      PrivateSubnet2ID:
-        default: Private Subnet 2 ID
-      PublicSubnet1ID:
-        default: Public Subnet 1 ID
-      PublicSubnet2ID:
-        default: Public Subnet 2 ID
-      QSS3BucketName:
-        default: Quick Start S3 Bucket Name
-      QSS3KeyPrefix:
-        default: Quick Start S3 Key Prefix
-      RemoteAccessCIDR:
-        default: Allowed External Access CIDR (OCP UI)
-      VPCID:
-        default: VPC ID
-      VPCCIDR:
-        default: VPC CIDR
-      InstanceType:
-        default: Boomi Atom Instance Type
-      BoomiInstanceVolumeSize:
-        default: Volume Size for Boomi Instances
-      AtomName:
-        default: Atom Name
-      BoomiAccountID:
-        default: Boomi Account ID
-      BoomiUsername:
-        default: Boomi Username
-      BoomiPassword:
-        default: Boomi Password
-      BoomiInstallDir:
-        default: Boomi Install Directory
+    ParameterLabels:
+        KeyPairName:
+          default: SSH Key Name
+        PrivateSubnet1CIDR:
+          default: Private Subnet 1 ID
+        PrivateSubnet2CIDR:
+          default: Private Subnet 2 ID
+        PublicSubnet1CIDR:
+          default: Public Subnet 1 ID
+        PublicSubnet2CIDR:
+          default: Public Subnet 2 ID
+        QSS3BucketName:
+          default: Quick Start S3 Bucket Name
+        QSS3KeyPrefix:
+          default: Quick Start S3 Key Prefix
+        RemoteAccessCIDR:
+          default: Allowed External Access CIDR (OCP UI)
+        VPCID:
+          default: VPC ID
+        VPCCIDR:
+          default: VPC CIDR
+        InstanceType:
+          default: Boomi Atom Instance Type
+        BoomiInstanceVolumeSize:
+          default: Volume Size for Boomi Instances
+        AtomName:
+          default: Atom Name
+        BoomiAccountID:
+          default: Boomi Account ID
+        BoomiUsername:
+          default: Boomi Username
+        BoomiPassword:
+          default: Boomi Password
+        BoomiInstallDir:
+          default: Boomi Install Directory
 Parameters:
   KeyPairName:
     Description: Keyname for access to EC2 Instances
