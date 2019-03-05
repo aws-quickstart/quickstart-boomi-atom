@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey":"AvailabilityZones",
-        "ParameterValue":"ap-southeast-2c"
+        "ParameterValue":"ap-southeast-2c,ap-southeast-2b"
     },
     {
         "ParameterKey":"BoomiUsername",
