@@ -29,6 +29,12 @@ Metadata:
          - BoomiUsername
          - BoomiPassword
          - BoomiInstallDir
+      -
+       Label:
+         default: "AWS Quick Start configuration"
+       Parameters:
+         - QSS3KeyPrefix
+         - QSS3BucketName
     ParameterLabels:
         KeyPairName:
           default: SSH key name
