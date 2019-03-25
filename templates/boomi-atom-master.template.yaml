@@ -123,8 +123,8 @@ Parameters:
     Description: The CIDR block used for the private subnet located in Availability Zone 2.
     Type: String
   AvailabilityZones:
-    Description: List of Availability Zones to use for the subnets in the VPC. Three
-      Availability Zones are used for this deployment, and the logical order of your
+    Description: List of Availability Zones to use for the subnets in the VPC. This deployment uses two
+      Availability Zones, and the logical order of your
       selections is preserved.
     Type: List<AWS::EC2::AvailabilityZone::Name>
   BoomiUsername:
