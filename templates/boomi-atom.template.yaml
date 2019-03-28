@@ -12,66 +12,73 @@ Metadata:
          - PublicSubnet2ID
          - PrivateSubnet1ID
          - PrivateSubnet2ID
+         - BastionSecurityGroupID
       -
         Label:
-          default: "Amazon EC2 Configuration"
+          default: "Amazon EC2 configuration"
         Parameters:
           - InstanceType
           - KeyPairName
           - BoomiInstanceVolumeSize
       -
         Label:
-          default: "Dell Boomi Atom Configuration"
+          default: "Dell Boomi Atom configuration"
         Parameters:
          - AtomName
          - BoomiAccountID
          - BoomiUsername
          - BoomiPassword
          - BoomiInstallDir
+      -
+       Label:
+         default: "AWS Quick Start configuration"
+       Parameters:
+         - QSS3KeyPrefix
+         - QSS3BucketName
     ParameterLabels:
         KeyPairName:
-          default: SSH Key Name
+          default: SSH key name
         PrivateSubnet1CIDR:
-          default: Private Subnet 1 ID
+          default: Private subnet 1 ID
         PrivateSubnet2CIDR:
-          default: Private Subnet 2 ID
+          default: Private subnet 2 ID
         PublicSubnet1CIDR:
-          default: Public Subnet 1 ID
+          default: Public subnet 1 ID
         PublicSubnet2CIDR:
-          default: Public Subnet 2 ID
+          default: Public subnet 2 ID
         QSS3BucketName:
-          default: Quick Start S3 Bucket Name
+          default: Quick Start S3 bucket name
         QSS3KeyPrefix:
-          default: Quick Start S3 Key Prefix
+          default: Quick Start S3 key prefix
         RemoteAccessCIDR:
-          default: Allowed External Access CIDR (OCP UI)
+          default: Allowed external access CIDR (OCP UI)
         VPCID:
           default: VPC ID
         VPCCIDR:
           default: VPC CIDR
         InstanceType:
-          default: Boomi Atom Instance Type
+          default: Boomi Atom instance type
         BoomiInstanceVolumeSize:
-          default: Volume Size for Boomi Instances
+          default: Volume size for Boomi instances
         AtomName:
-          default: Atom Name
+          default: Atom name
         BoomiAccountID:
-          default: Boomi Account ID
+          default: Boomi account ID
         BoomiUsername:
-          default: Boomi Username
+          default: Boomi User name
         BoomiPassword:
-          default: Boomi Password
+          default: Boomi password
         BoomiInstallDir:
-          default: Boomi Install Directory
+          default: Boomi install directory
 Parameters:
   KeyPairName:
-    Description: Keyname for access to EC2 Instances
+    Description: A public/private key pair, which allows you to connect securely to your instance after it launches.
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing Keyname
   BastionSecurityGroupID:
     Type: AWS::EC2::SecurityGroup::Id
   InstanceType:
-    Description: Boomi Host Instance Type
+    Description: The instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.
     Type: String
     Default: m5.xlarge
     AllowedValues:
@@ -81,40 +88,40 @@ Parameters:
       - r5.xlarge
       - c5.xlarge
   BoomiInstanceVolumeSize:
-     Description: Atom Volume Size (In GiB). Size from 1GiB - 16TiB
+     Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
      Type: Number
      Default: 100
   VPCID:
     Description: Select the VPC to deploy into.
     Type: AWS::EC2::VPC::Id
   PublicSubnet1ID:
-    Description: Public Subnet ID 1 located in Availability Zone 1
+    Description: The ID of the public subnet in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   PublicSubnet2ID:
-    Description: Public Subnet ID 2 located in Availability Zone 2
+    Description: The ID of the public subnet in Availability Zone 2 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet1ID:
-    Description: Private Subnet ID 1 located in Availability Zone 1
+    Description: The ID of the private subnet in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet2ID:
-    Description: Private Subnet ID 2 located in Availability Zone 2
+    Description: The ID of the private subnet in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   BoomiUsername:
-    Description: Please enter your Boomi User Name
+    Description: The email account associated with the Dell Boomi account.
     Type: String
   BoomiPassword:
      Description: Please enter your Boomi Account Password
      Type: String
      NoEcho: true
   BoomiAccountID:
-     Description: Please enter your Boomi Account ID
+     Description: The Dell Boomi account ID that you want to associate the new Atom with.
      Type: String
   BoomiInstallDir:
-     Description: Please enter an install directory for Boomi
+     Description: The installation directory for Dell Boomi.
      Type: String
      Default: /opt/boomi/
   AtomName:
-     Description: Please enter a name for your Boomi Instance
+     Description: The name given to the Boomi Atom instance.
      Type: String
      Default: atom1
 Mappings:
