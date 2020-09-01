@@ -27,9 +27,10 @@ Metadata:
         Parameters:
          - AtomName
          - BoomiAccountID
-         - BoomiUsername
-         - BoomiPassword
+#         - BoomiUsername
+#         - BoomiPassword
          - BoomiInstallDir
+         - BoomiInstallToken
       -
        Label:
          default: "AWS Quick Start configuration"
@@ -62,17 +63,19 @@ Metadata:
         InstanceType:
           default: Boomi Atom instance type
         BoomiInstanceVolumeSize:
-          default: Volume size for Boomi instances
+          default: Boomi Atom EBS Volume size (GB)
         AtomName:
           default: Atom name
         BoomiAccountID:
           default: Boomi account ID
-        BoomiUsername:
-          default: Boomi user name
-        BoomiPassword:
-          default: Boomi password
+#        BoomiUsername:
+#          default: Boomi user name
+#        BoomiPassword:
+#          default: Boomi password
         BoomiInstallDir:
           default: Boomi install directory
+        BoomiInstallToken:
+          default: Boomi Installation Token
 Parameters:
   KeyPairName:
     Description: A public/private key pair, which allows you to connect securely to your instance after it launches.
@@ -136,6 +139,9 @@ Parameters:
      NoEcho: true
   BoomiAccountID:
      Description: The Dell Boomi account ID that you want to associate the new Atom with.
+     Type: String
+  BoomiInstallToken:
+     Description: Please enter your Boomi Install Token
      Type: String
   BoomiInstallDir:
      Description: The installation directory for Dell Boomi.
@@ -215,20 +221,21 @@ Resources:
             - Outputs.PublicSubnet1ID
           PrivateSubnet1ID: !GetAtt
             - VPCStack
-            - Outputs.PublicSubnet1ID
+            - Outputs.PrivateSubnet1AID
           PrivateSubnet2ID: !GetAtt
             - VPCStack
-            - Outputs.PublicSubnet1ID
+            - Outputs.PrivateSubnet2AID
           BoomiUsername: !Ref 'BoomiUsername'
           BoomiPassword: !Ref 'BoomiPassword'
           BoomiAccountID: !Ref 'BoomiAccountID'
           BoomiInstallDir: !Ref 'BoomiInstallDir'
           AtomName: !Ref 'AtomName'
+          BoomiInstallToken: !Ref 'BoomiInstallToken'
           BastionSecurityGroupID: !GetAtt
             - BastionStack
             - Outputs.BastionSecurityGroupID
           InstanceType: !Ref InstanceType
-          BoomiInstanceVolumeSize: !Ref BoomiInstanceVolumeSize
+          BoomiInstanceVolumeSize: !Ref 'BoomiInstanceVolumeSize'
           VPCID: !GetAtt
             - VPCStack
             - Outputs.VPCID
