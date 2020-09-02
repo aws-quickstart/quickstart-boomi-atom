@@ -1,6 +1,11 @@
 // Replace the content in <>
 // Describe or link to specific knowledge requirements; for example: “familiarity with basic concepts in the areas of networking, database operations, and data encryption” or “familiarity with <software>.”
 
-This Quick Start assumes familiarity with <knowledge expectations>.
-
-
+This Quick Start assumes familiarity with basic concepts of networking, bastion hosts, volume sizing, and
+compute performance. It also assumes familiarity with the Dell Boomi
+variables that are required when deploying an Atom server. These
+variables include Atom Name, Local Path, Local Temp Path, Account Id,
+Account Name, and Account Password. This Quick Start follows the
+patterns for Unattended Dell Boomi Atom deployments found on the
+http://help.boomi.com/atomsphere/GUID-27BDD6B1-E6BD-48C9-8C6D-EC1B2CA60316.html[Dell
+Boomi website].

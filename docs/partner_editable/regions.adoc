@@ -1,4 +1,5 @@
-The following Regions are currently supported by this Quick Start.
-
-- _us-east-1 (N. Virginia)_ (EXAMPLE)
-- _us-east-2 (Ohio)_ (EXAMPLE)
+This
+deployment can be deployed in all AWS Regions. For a current list of
+supported regions, see
+https://docs.aws.amazon.com/general/latest/gr/rande.html#elasticfilesystem-region[AWS
+Regions and Endpoints] in the AWS documentation.

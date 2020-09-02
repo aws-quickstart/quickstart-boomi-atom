@@ -2,22 +2,63 @@
 //Should any sections not be applicable, remove them
 
 == Test the deployment
-// If steps are required to test the deployment, add them here. If not, remove the heading
 
-== Post deployment steps
-// If Post-deployment steps are required, add them here. If not, remove the heading
+To navigate to the Boomi Atom Dashboard, https://platform.boomi.com/[log
+in] to your Dell Boomi account and navigate to the *Manage* drop-down
+menu. Select *Atom Management* to see the Atoms in your account. The
+newly created AWS EC2 instance Atom server will be displayed here. You
+can then attach the AWS EC2 instance Atom to any environment you have
+staged and deploy workloads to that Atom.
+
+[#unattached-atom]
+.Dell Boomi Dashboard with an Unattached AWS-managed Atom
+[link=images/image3.png]
+image::../images/image3.png[unattached-atom,width=648,height=397]
+
 
 == Best practices for using {partner-product-short-name} on AWS
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
-_Add any best practices for using the software._
+The Dell Boomi Atom that is deployed on AWS can be managed in the Dell
+Boomi Dashboard just as any other Atom is managed. Atoms can be attached
+to environments within an account and can have workloads deployed to
+them in those environments.
+
+In <<deployed-atom>>, a Dell Boomi Atom server has been deployed in a Dell Boomi
+account through this Quick Start. The Atom server is identified by the
+DNS name `ip-172-30-7.186.ec2.internal`. The account contains two Dell
+Boomi environments: one labeled Production and the other labeled Test:
+
+[#deployed-atom]
+.Dell Boomi Dashboard with an Unattached AWS-managed Atom server
+[link=images/image4.png]
+image::../images/image4.png[deployed-atom,width=648,height=258]
 
 == Security
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
-_Add any security-related information._
+This Quick Start deploys a bastion host and a Dell Boomi Atom server
+into an AWS VPC. The bastion host is the only means of accessing the
+Dell Boomi Atom server at a command line level. The Dell Boomi Atom
+server is deployed into a private subnet and cannot be reached through
+the internet. The Boomi Atom server communicates through a NAT Gateway
+for updates and patches, and it communicates through the public-facing
+Elastic Load Balancer to communicate with the Dell Boomi Dashboard.
 
-== Other useful information
-//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
+== Performance Monitoring
 
-_Add any other details that will help the customer use the software on AWS._
+Monitoring the CPU, network, and Amazon EBS performance of your AWS Dell
+Boomi Atom is done through Amazon CloudWatch metrics.
+
+CPU and network performance is measured in utilization, network in and
+out, network packets in and out, and system status checks.
+
+Amazon EBS volume performance is measured in read and write throughput,
+average read and write size, read and write bandwidth, read and write
+latency, and volume idle time.
+
+Further monitoring of disk space and inode consumption must be performed
+at the command line level of the EC2 instance using the `df -h` and `df -i`
+Linux commands.
+// 
+// [#perf-monitoring]
+// [link=images/image6.png]
+// image::../images/image6.png[image,width=648,height=220]
