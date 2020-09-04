@@ -40,8 +40,7 @@ into an AWS VPC. The bastion host is the only means of accessing the
 Dell Boomi Atom server at a command line level. The Dell Boomi Atom
 server is deployed into a private subnet and cannot be reached through
 the internet. The Boomi Atom server communicates through a NAT Gateway
-for updates and patches, and it communicates through the public-facing
-Elastic Load Balancer to communicate with the Dell Boomi Dashboard.
+for updates and patches.
 
 == Performance Monitoring
 
