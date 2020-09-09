@@ -70,7 +70,7 @@ Go to Integration → Build → Create → Atom Runtime → Atom
 
 image:../{imagedir}/build-install-token-step1.png[image,width=402,height=319]
 
-image:../images/image-atomsetup.png[image,width=462,height=187]
+image:../{imagedir}/image-atomsetup.png[image,width=462,height=187]
 
 Next expand ‘Security Options’.
 
