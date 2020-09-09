@@ -68,7 +68,7 @@ You can create an installation token without having to share your login credenti
 
 Go to Integration → Build → Create → Atom Runtime → Atom
 
-image:../images/build-install-token-step1.png[image,width=402,height=319]
+image:../{imagedir}/build-install-token-step1.png[image,width=402,height=319]
 
 image:../images/image-atomsetup.png[image,width=462,height=187]
 
@@ -77,4 +77,3 @@ Next expand ‘Security Options’.
 image:../images/atom-generated.png[image]
 
 Now you can generate the installation token. You can specify up to 24 hours duration for the token before it expires.
-
