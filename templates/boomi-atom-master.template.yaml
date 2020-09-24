@@ -27,8 +27,8 @@ Metadata:
         Parameters:
          - AtomName
          - BoomiAccountID
-#         - BoomiUsername
-#         - BoomiPassword
+         - BoomiUsername
+         - BoomiPassword
          - BoomiInstallDir
          - BoomiInstallToken
       -
@@ -68,10 +68,10 @@ Metadata:
           default: Atom name
         BoomiAccountID:
           default: Boomi account ID
-#        BoomiUsername:
-#          default: Boomi user name
-#        BoomiPassword:
-#          default: Boomi password
+        BoomiUsername:
+          default: Boomi user name
+        BoomiPassword:
+          default: Boomi password
         BoomiInstallDir:
           default: Boomi install directory
         BoomiInstallToken:
