@@ -9,10 +9,7 @@ Metadata:
         default: Network Configuration
       Parameters:
       - VPCID
-      - PublicSubnet1ID
-      - PublicSubnet2ID
       - PrivateSubnet1ID
-      - PrivateSubnet2ID
       - BastionSecurityGroupID
     - Label:
         default: Amazon EC2 configuration
@@ -27,33 +24,13 @@ Metadata:
       - BoomiAccountID
       - BoomiUsername
       - BoomiPassword
+      - BoomiInstallToken
       - BoomiInstallDir
-    - Label:
-        default: AWS Quick Start configuration
-      Parameters:
-      - QSS3KeyPrefix
-      - QSS3BucketName
     ParameterLabels:
       KeyPairName:
         default: SSH key name
-      PrivateSubnet1CIDR:
-        default: Private subnet 1 ID
-      PrivateSubnet2CIDR:
-        default: Private subnet 2 ID
-      PublicSubnet1CIDR:
-        default: Public subnet 1 ID
-      PublicSubnet2CIDR:
-        default: Public subnet 2 ID
-      QSS3BucketName:
-        default: Quick Start S3 bucket name
-      QSS3KeyPrefix:
-        default: Quick Start S3 key prefix
-      RemoteAccessCIDR:
-        default: Allowed external access CIDR (OCP UI)
       VPCID:
         default: VPC ID
-      VPCCIDR:
-        default: VPC CIDR
       InstanceType:
         default: Boomi Atom instance type
       BoomiInstanceVolumeSize:
@@ -65,12 +42,11 @@ Metadata:
       BoomiPassword:
         default: Boomi password
       BoomiInstallToken:
-        Description: Please enter your Boomi Install Token - Not needed if authenticating via BoomiUsername/Password
-        Type: String
+        default: Boomi Installation Token
+      PrivateSubnet1ID:
+        default: Private Subnet ID
       AtomName:
-        Description: Please enter a name for your Boomi Instance
-        Type: String
-        Default: atom1
+        default: Atom Name
       BoomiInstallDir:
         default: Boomi install directory
 Parameters:
@@ -105,19 +81,7 @@ Parameters:
   VPCID:
     Description: Select the VPC to deploy into.
     Type: AWS::EC2::VPC::Id
-  PublicSubnet1ID:
-    Description: The ID of the public subnet in Availability Zone 1 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
-  PublicSubnet2ID:
-    Description: The ID of the public subnet in Availability Zone 2 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
   PrivateSubnet1ID:
-    Description: The ID of the private subnet in Availability Zone 1 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
-  PrivateSubnet2ID:
     Description: The ID of the private subnet in Availability Zone 1 in your existing
       VPC.
     Type: AWS::EC2::Subnet::Id
@@ -143,7 +107,7 @@ Parameters:
   BoomiInstallToken:
     Description: Please enter your Boomi Install Token
     Type: String
-
+    Default: ''
 Mappings:
   AWSAMIRegionMap:
     ap-northeast-1:
@@ -196,7 +160,6 @@ Mappings:
       AMZNLINUX2HVM: ami-0aec3e46a106ca42d
     cn-northwest-1:
       AMZNLINUX2HVM: ami-05a85395c8ff37b18
-
 Rules:
   PasswordOrMFAToken:
     Assertions:
@@ -211,7 +174,6 @@ Rules:
         AssertDescription: You must supply either a password *or* an MFA installation token.
 Conditions:
   InstallTokenProvided:  !Not [!Equals [!Ref BoomiInstallToken, '']]
-
 Resources:
   BoomiSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -236,9 +198,7 @@ Resources:
         - Key: Name
           Value: Atom
     DeletionPolicy: Snapshot
-
   AtomInstance:
-    DependsOn: BoomiSecurityGroup
     Type: 'AWS::EC2::Instance'
     Properties:
       Tags:
@@ -255,15 +215,14 @@ Resources:
       NetworkInterfaces:
         - GroupSet:
             - !Ref BoomiSecurityGroup
-          AssociatePublicIpAddress: 'false'
+          AssociatePublicIpAddress: false
           DeviceIndex: '0'
-          DeleteOnTermination: 'true'
+          DeleteOnTermination: true
           SubnetId: !Ref PrivateSubnet1ID
       Volumes:
         -
           Device: "/dev/xvdf"
           VolumeId: !Ref AtomInstanceEBS
-
       KeyName:
         Ref: KeyPairName
       UserData:
@@ -282,7 +241,6 @@ Resources:
           qs_aws-cfn-bootstrap
           sudo cfn-init -v --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
           sudo cfn-signal -e $? --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
-
     Metadata:
       AWS::CloudFormation::Init:
         config:
@@ -327,7 +285,6 @@ Resources:
               command: chown root:root /lib/systemd/system/atom.service && chmod 000644 /lib/systemd/system/atom.service
             10_start_service:
               command: systemctl enable atom && systemctl start atom
-
   EcInstanceAutorecoverAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -344,5 +301,4 @@ Resources:
       Statistic: Minimum
       ComparisonOperator: GreaterThanThreshold
       Threshold: 0
-
 ...

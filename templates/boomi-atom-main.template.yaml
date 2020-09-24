@@ -56,8 +56,6 @@ Metadata:
           default: Quick Start S3 key prefix
         RemoteAccessCIDR:
           default: Allowed external access CIDR (OCP UI)
-        VPCID:
-          default: VPC ID
         VPCCIDR:
           default: VPC CIDR
         InstanceType:
@@ -213,18 +211,9 @@ Resources:
       Properties:
         TemplateURL: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/boomi-atom.template.yaml'
         Parameters:
-          PublicSubnet1ID: !GetAtt
-            - VPCStack
-            - Outputs.PublicSubnet1ID
-          PublicSubnet2ID: !GetAtt
-            - VPCStack
-            - Outputs.PublicSubnet1ID
           PrivateSubnet1ID: !GetAtt
             - VPCStack
             - Outputs.PrivateSubnet1AID
-          PrivateSubnet2ID: !GetAtt
-            - VPCStack
-            - Outputs.PrivateSubnet2AID
           BoomiUsername: !Ref 'BoomiUsername'
           BoomiPassword: !Ref 'BoomiPassword'
           BoomiAccountID: !Ref 'BoomiAccountID'
