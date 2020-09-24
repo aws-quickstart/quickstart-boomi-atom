@@ -90,9 +90,9 @@ Parameters:
       - r5.xlarge
       - c5.xlarge
   BoomiInstanceVolumeSize:
-     Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
-     Type: Number
-     Default: 100
+    Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+    Type: Number
+    Default: 100
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
@@ -132,23 +132,24 @@ Parameters:
     Description: The email account associated with the Dell Boomi account.
     Type: String
   BoomiPassword:
-     Description: The password associated with the Dell Boomi account.
-     Type: String
-     NoEcho: true
+    Description: The password associated with the Dell Boomi account.
+    Type: String
+    NoEcho: true
   BoomiAccountID:
-     Description: The Dell Boomi account ID that you want to associate the new Atom with.
-     Type: String
+    Description: The Dell Boomi account ID that you want to associate the new Atom with.
+    Type: String
   BoomiInstallToken:
-     Description: Please enter your Boomi Install Token
-     Type: String
+    Description: Please enter your Boomi Install Token
+    Type: String
+    Default: ''
   BoomiInstallDir:
-     Description: The installation directory for Dell Boomi.
-     Type: String
-     Default: /opt/boomi/
+    Description: The installation directory for Dell Boomi.
+    Type: String
+    Default: /opt/boomi/
   AtomName:
-     Description: The name given to the Boomi Atom instance.
-     Type: String
-     Default: atom1
+    Description: The name given to the Boomi Atom instance.
+    Type: String
+    Default: atom1
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase
