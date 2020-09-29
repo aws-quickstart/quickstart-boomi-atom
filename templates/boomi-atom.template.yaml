@@ -175,6 +175,14 @@ Rules:
 Conditions:
   InstallTokenProvided:  !Not [!Equals [!Ref BoomiInstallToken, '']]
 Resources:
+  AtomWaitHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
+  AtomWaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
+    Properties:
+      Handle: !Ref 'AtomWaitHandle'
+      Timeout: "900"
+      Count: 1
   BoomiSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -228,28 +236,42 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          if [ $UID -eq 0 ]; then
-            sudo chmod 777 "$0"
-            exec su ec2-user "$0"
-          fi
           export PATH=$PATH:/usr/local/bin
-          yum install git -y || apt-get install -y git || zypper -n install git
+          yum update -y 
+          yum install git -y
           git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git /quickstart-linux-utilities
           cd /quickstart-linux-utilities
           source quickstart-cfn-tools.source
           qs_update-os
           qs_aws-cfn-bootstrap
-          cfn-init -v --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
-          cfn-signal -e $? --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? '${AtomWaitHandle}'
     Metadata:
       AWS::CloudFormation::Init:
         config:
           packages:
             yum:
               java-1.8.0-openjdk: []
+          files:
+            /tmp/atom.service:
+              content: !Sub |
+                [Unit]
+                Description=Dell Boomi Atom
+                After=network.target
+                RequiresMountsFor=/opt/boomi/Atom_${AtomName}
+                [Service]
+                Type=forking
+                User=root
+                Restart=always
+                ExecStart=/opt/boomi/Atom_${AtomName}/bin/atom start
+                ExecStop=/opt/boomi/Atom_${AtomName}/bin/atom stop
+                ExecReload=/opt/boomi/Atom_${AtomName}/bin/atom restart
+                [Install]
+                WantedBy=multi-user.target
+              mode: "000644"
+              owner: "root"
+              group: "root"
           commands:
-            01_update_yum:
-              command: yum update -y
             02_create_xfs:
               command: mkfs -t xfs /dev/nvme1n1 && mkdir /opt/boomi && sh -c 'echo "/dev/nvme1n1 /opt/boomi xfs defaults,noatime 0 0" >> /etc/fstab' && mount -a
             03_set_hostname:
@@ -266,24 +288,10 @@ Resources:
                 - !Sub |
                   echo "installing via token: /usr/local/boomi/atom_install64.sh -q console -VinstallToken=${BoomiInstallToken} -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}" && /usr/local/boomi/atom_install64.sh -q console -VinstallToken=${BoomiInstallToken} -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
                 - !Sub |
-                  echo "installing via username/password: /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword=******** -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}" && /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword=${BoomiPassword} -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
+                  echo "installing via username/password: /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword=******** -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}" && /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword="${BoomiPassword}" -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
             08_create_service:
-              command: touch /lib/systemd/system/atom.service && echo "[Unit]
-                Description=Dell Boomi Atom
-                After=network.target
-                RequiresMountsFor=/opt/boomi/Atom_atom
-                [Service]
-                Type=forking
-                User=root
-                Restart=always
-                ExecStart=/opt/boomi/Atom_atom/bin/atom start
-                ExecStop=/opt/boomi/Atom_atom/bin/atom stop
-                ExecReload=/opt/boomi/Atom_atom/bin/atom restart
-                [Install]
-                WantedBy=multi-user.target" > /lib/systemd/system/atom.service
-            09_service_perms:
-              command: chown root:root /lib/systemd/system/atom.service && chmod 000644 /lib/systemd/system/atom.service
-            10_start_service:
+              command: mv /tmp/atom.service /lib/systemd/system/atom.service
+            09_start_service:
               command: systemctl enable atom && systemctl start atom
   EcInstanceAutorecoverAlarm:
     Type: AWS::CloudWatch::Alarm
