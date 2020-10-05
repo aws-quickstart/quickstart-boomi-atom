@@ -104,6 +104,7 @@ Parameters:
     Description: The name given to the Boomi Atom instance.
     Type: String
     Default: atom1
+    AllowedPattern: "[a-zA-Z0-9_]*"
   BoomiInstallToken:
     Description: Please enter your Boomi Install Token
     Type: String

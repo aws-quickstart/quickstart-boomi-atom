@@ -152,6 +152,7 @@ Parameters:
     Description: The name given to the Boomi Atom instance.
     Type: String
     Default: atom1
+    AllowedPattern: "[a-zA-Z0-9_]*"
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase
