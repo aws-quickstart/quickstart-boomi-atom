@@ -40,8 +40,7 @@ into an AWS VPC. The bastion host is the only means of accessing the
 Dell Boomi Atom server at a command line level. The Dell Boomi Atom
 server is deployed into a private subnet and cannot be reached through
 the internet. The Boomi Atom server communicates through a NAT Gateway
-for updates and patches, and it communicates through the public-facing
-Elastic Load Balancer to communicate with the Dell Boomi Dashboard.
+for updates and patches.
 
 == Performance Monitoring
 
@@ -62,3 +61,19 @@ Linux commands.
 // [#perf-monitoring]
 // [link=images/image6.png]
 // image::../images/image6.png[image,width=648,height=220]
+
+=== Creating an Installation Token
+
+You can create an installation token without having to share your login credentials for an Atom installation. If you are an administrator, follow the steps below to create an installation token:
+
+Go to Integration → Build → Create → Atom Runtime → Atom
+
+image:../{imagedir}/build-install-token-step1.png[image,width=402,height=319]
+
+image:../{imagedir}/image-atomsetup.png[image,width=462,height=187]
+
+Next expand ‘Security Options’.
+
+image:../images/atom-generated.png[image]
+
+Now you can generate the installation token. You can specify up to 24 hours duration for the token before it expires.
