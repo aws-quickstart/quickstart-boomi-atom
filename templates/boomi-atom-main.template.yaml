@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and Private Subnets, and stages a Dell Boomi Atom.
+Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and Private Subnets, and stages a Dell Boomi Atom. (qs-1r0e5j27q)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -30,12 +30,13 @@ Metadata:
          - BoomiUsername
          - BoomiPassword
          - BoomiInstallDir
-      -
-       Label:
-         default: "AWS Quick Start configuration"
-       Parameters:
-         - QSS3KeyPrefix
-         - QSS3BucketName
+         - BoomiInstallToken
+      - Label:
+          default: AWS Quick Start configuration
+        Parameters:      
+          - QSS3BucketName
+          - QSS3BucketRegion
+          - QSS3KeyPrefix
     ParameterLabels:
         AvailabilityZones:
           default: Availability Zones
@@ -51,18 +52,18 @@ Metadata:
           default: Public subnet 2 CIDR
         QSS3BucketName:
           default: Quick Start S3 bucket name
+        QSS3BucketRegion:
+          default: Quick Start S3 bucket Region
         QSS3KeyPrefix:
           default: Quick Start S3 key prefix
         RemoteAccessCIDR:
           default: Allowed external access CIDR (OCP UI)
-        VPCID:
-          default: VPC ID
         VPCCIDR:
           default: VPC CIDR
         InstanceType:
           default: Boomi Atom instance type
         BoomiInstanceVolumeSize:
-          default: Volume size for Boomi instances
+          default: Boomi Atom EBS Volume size (GB)
         AtomName:
           default: Atom name
         BoomiAccountID:
@@ -73,6 +74,8 @@ Metadata:
           default: Boomi password
         BoomiInstallDir:
           default: Boomi install directory
+        BoomiInstallToken:
+          default: Boomi Installation Token
 Parameters:
   KeyPairName:
     Description: A public/private key pair, which allows you to connect securely to your instance after it launches.
@@ -89,9 +92,9 @@ Parameters:
       - r5.xlarge
       - c5.xlarge
   BoomiInstanceVolumeSize:
-     Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
-     Type: Number
-     Default: 100
+    Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+    Type: Number
+    Default: 100
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
@@ -131,20 +134,25 @@ Parameters:
     Description: The email account associated with the Dell Boomi account.
     Type: String
   BoomiPassword:
-     Description: The password associated with the Dell Boomi account.
-     Type: String
-     NoEcho: true
+    Description: The password associated with the Dell Boomi account.
+    Type: String
+    NoEcho: true
   BoomiAccountID:
-     Description: The Dell Boomi account ID that you want to associate the new Atom with.
-     Type: String
+    Description: The Dell Boomi account ID that you want to associate the new Atom with.
+    Type: String
+  BoomiInstallToken:
+    Description: Please enter your Boomi Install Token
+    Type: String
+    Default: ''
   BoomiInstallDir:
-     Description: The installation directory for Dell Boomi.
-     Type: String
-     Default: /opt/boomi/
+    Description: The installation directory for Dell Boomi.
+    Type: String
+    Default: /opt/boomi/
   AtomName:
-     Description: The name given to the Boomi Atom instance.
-     Type: String
-     Default: atom1
+    Description: The name given to the Boomi Atom instance.
+    Type: String
+    Default: atom1
+    AllowedPattern: "[a-zA-Z0-9_]*"
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase
@@ -154,6 +162,10 @@ Parameters:
     Description: S3 bucket name for the Quick Start assets. This string can include
       numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start
       or end with a hyphen (-).
+    Type: String
+  QSS3BucketRegion:
+    Default: 'us-east-1'
+    Description: 'AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.'
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
@@ -170,11 +182,19 @@ Parameters:
     Description: The CIDR IP range that is permitted to access the instances. We recommend
       that you set this value to a trusted IP range.
     Type: String
+Conditions:
+  UsingDefaultBucket: !Equals
+    - !Ref QSS3BucketName
+    - 'aws-quickstart'
 Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template'
+      TemplateURL: 
+        !Sub 
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template'
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
         AvailabilityZones: !Join [ ',', !Ref 'AvailabilityZones' ]
         NumberOfAZs: '2'
@@ -186,9 +206,13 @@ Resources:
   BastionStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion.template"
+      TemplateURL: 
+        !Sub
+          - "https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion.template"
+          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Parameters:
-        BastionAMIOS: 'Amazon-Linux-HVM'
+        BastionAMIOS: 'Amazon-Linux2-HVM'
         KeyPairName: !Ref 'KeyPairName'
         PublicSubnet1ID: !GetAtt
           - VPCStack
@@ -198,6 +222,7 @@ Resources:
           - Outputs.PublicSubnet2ID
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Sub "${QSS3KeyPrefix}submodules/quickstart-linux-bastion/"
+        QSS3BucketRegion: !Ref QSS3BucketRegion
         RemoteAccessCIDR: !Ref RemoteAccessCIDR
         VPCID: !GetAtt
           - VPCStack
@@ -205,30 +230,26 @@ Resources:
   BoomiAtomStack:
       Type: AWS::CloudFormation::Stack
       Properties:
-        TemplateURL: !Sub 'https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/boomi-atom.template.yaml'
+        TemplateURL: 
+          !Sub 
+            - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/boomi-atom.template.yaml'
+            - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+              S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
         Parameters:
-          PublicSubnet1ID: !GetAtt
-            - VPCStack
-            - Outputs.PublicSubnet1ID
-          PublicSubnet2ID: !GetAtt
-            - VPCStack
-            - Outputs.PublicSubnet1ID
           PrivateSubnet1ID: !GetAtt
             - VPCStack
-            - Outputs.PublicSubnet1ID
-          PrivateSubnet2ID: !GetAtt
-            - VPCStack
-            - Outputs.PublicSubnet1ID
+            - Outputs.PrivateSubnet1AID
           BoomiUsername: !Ref 'BoomiUsername'
           BoomiPassword: !Ref 'BoomiPassword'
           BoomiAccountID: !Ref 'BoomiAccountID'
           BoomiInstallDir: !Ref 'BoomiInstallDir'
           AtomName: !Ref 'AtomName'
+          BoomiInstallToken: !Ref 'BoomiInstallToken'
           BastionSecurityGroupID: !GetAtt
             - BastionStack
             - Outputs.BastionSecurityGroupID
           InstanceType: !Ref InstanceType
-          BoomiInstanceVolumeSize: !Ref BoomiInstanceVolumeSize
+          BoomiInstanceVolumeSize: !Ref 'BoomiInstanceVolumeSize'
           VPCID: !GetAtt
             - VPCStack
             - Outputs.VPCID

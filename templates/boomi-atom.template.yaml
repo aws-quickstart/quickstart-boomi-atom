@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets and
-  Private Subnets, and stages a Dell Boomi Atom.
+  Private Subnets, and stages a Dell Boomi Atom. (qs-1r0e5j2b9)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -9,10 +9,7 @@ Metadata:
         default: Network Configuration
       Parameters:
       - VPCID
-      - PublicSubnet1ID
-      - PublicSubnet2ID
       - PrivateSubnet1ID
-      - PrivateSubnet2ID
       - BastionSecurityGroupID
     - Label:
         default: Amazon EC2 configuration
@@ -27,45 +24,29 @@ Metadata:
       - BoomiAccountID
       - BoomiUsername
       - BoomiPassword
+      - BoomiInstallToken
       - BoomiInstallDir
-    - Label:
-        default: AWS Quick Start configuration
-      Parameters:
-      - QSS3KeyPrefix
-      - QSS3BucketName
     ParameterLabels:
       KeyPairName:
         default: SSH key name
-      PrivateSubnet1CIDR:
-        default: Private subnet 1 ID
-      PrivateSubnet2CIDR:
-        default: Private subnet 2 ID
-      PublicSubnet1CIDR:
-        default: Public subnet 1 ID
-      PublicSubnet2CIDR:
-        default: Public subnet 2 ID
-      QSS3BucketName:
-        default: Quick Start S3 bucket name
-      QSS3KeyPrefix:
-        default: Quick Start S3 key prefix
-      RemoteAccessCIDR:
-        default: Allowed external access CIDR (OCP UI)
       VPCID:
         default: VPC ID
-      VPCCIDR:
-        default: VPC CIDR
       InstanceType:
         default: Boomi Atom instance type
       BoomiInstanceVolumeSize:
-        default: Volume size for Boomi instances
-      AtomName:
-        default: Atom name
+        default: EBS Volume size for Boomi Atom instance
       BoomiAccountID:
         default: Boomi account ID
       BoomiUsername:
-        default: Boomi User name
+        default: Boomi Username - Not needed if authenticating via installation token
       BoomiPassword:
         default: Boomi password
+      BoomiInstallToken:
+        default: Boomi Installation Token
+      PrivateSubnet1ID:
+        default: Private Subnet ID
+      AtomName:
+        default: Atom Name
       BoomiInstallDir:
         default: Boomi install directory
 Parameters:
@@ -83,11 +64,15 @@ Parameters:
     Type: String
     Default: m5.xlarge
     AllowedValues:
-    - m4.xlarge
-    - m5.xlarge
-    - r4.xlarge
-    - r5.xlarge
-    - c5.xlarge
+      - m4.xlarge
+      - m5.xlarge
+      - m5.2xlarge
+      - m5.4xlarge
+      - r4.xlarge
+      - r5.xlarge
+      - c5.xlarge
+      - c5.2xlarge
+      - c5.4xlarge
   BoomiInstanceVolumeSize:
     Description: The size of the Amazon EBS volume attached to the Atom instance.
       Size range is 1 GiB - 16 TiB.
@@ -96,19 +81,7 @@ Parameters:
   VPCID:
     Description: Select the VPC to deploy into.
     Type: AWS::EC2::VPC::Id
-  PublicSubnet1ID:
-    Description: The ID of the public subnet in Availability Zone 1 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
-  PublicSubnet2ID:
-    Description: The ID of the public subnet in Availability Zone 2 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
   PrivateSubnet1ID:
-    Description: The ID of the private subnet in Availability Zone 1 in your existing
-      VPC.
-    Type: AWS::EC2::Subnet::Id
-  PrivateSubnet2ID:
     Description: The ID of the private subnet in Availability Zone 1 in your existing
       VPC.
     Type: AWS::EC2::Subnet::Id
@@ -131,55 +104,86 @@ Parameters:
     Description: The name given to the Boomi Atom instance.
     Type: String
     Default: atom1
+    AllowedPattern: "[a-zA-Z0-9_]*"
+  BoomiInstallToken:
+    Description: Please enter your Boomi Install Token
+    Type: String
+    Default: ''
 Mappings:
   AWSAMIRegionMap:
-    AMI:
-      AMZNLINUXHVM: amzn-ami-hvm-2018.03.0.20190611-x86_64-gp2
     ap-northeast-1:
-      AMZNLINUXHVM: ami-02ddf94e5edc8e904
+      AMZNLINUX2: ami-0ce107ae7af2e92b5
     ap-northeast-2:
-      AMZNLINUXHVM: ami-0ecd78c22823e02ef
+      AMZNLINUX2: ami-03b42693dc6a7dc35
     ap-south-1:
-      AMZNLINUXHVM: ami-05695932c5299858a
+      AMZNLINUX2: ami-0e306788ff2473ccb
     ap-southeast-1:
-      AMZNLINUXHVM: ami-043afc2b8b6cfba5c
+      AMZNLINUX2: ami-015a6758451df3cb9
     ap-southeast-2:
-      AMZNLINUXHVM: ami-01393ce9a3ca55d67
+      AMZNLINUX2: ami-0f96495a064477ffb
     ca-central-1:
-      AMZNLINUXHVM: ami-0fa94ecf2fef3420b
+      AMZNLINUX2: ami-0c2f25c1f66a1ff4d
     eu-central-1:
-      AMZNLINUXHVM: ami-0ba441bdd9e494102
+      AMZNLINUX2: ami-00a205cb8e06c3c4e
     eu-west-1:
-      AMZNLINUXHVM: ami-0e61341fa75fcaa18
+      AMZNLINUX2: ami-0bb3fad3c0286ebd5
     eu-west-2:
-      AMZNLINUXHVM: ami-050b8344d77081f4b
+      AMZNLINUX2: ami-0a669382ea0feb73a
     eu-west-3:
-      AMZNLINUXHVM: ami-053418e626d0549fc
+      AMZNLINUX2: ami-0de12f76efe134f2f
     sa-east-1:
-      AMZNLINUXHVM: ami-05b7dbc290217250d
+      AMZNLINUX2: ami-02898a1921d38a50b
     us-east-1:
-      AMZNLINUXHVM: ami-0e2ff28bfb72a4e45
+      AMZNLINUX2: ami-0947d2ba12ee1ff75
     us-east-2:
-      AMZNLINUXHVM: ami-0998bf58313ab53da
+      AMZNLINUX2: ami-03657b56516ab7912
     us-west-1:
-      AMZNLINUXHVM: ami-021bb9f371690f97a
+      AMZNLINUX2: ami-0e4035ae3f70c400f
     us-west-2:
-      AMZNLINUXHVM: ami-079f731edfe27c29c
+      AMZNLINUX2: ami-0528a5175983e7f28
+    eu-north-1:
+      AMZNLINUX2: ami-0653812935d0743fe
+    ap-east-1:
+      AMZNLINUX2: ami-814d0ff0
+    me-south-1:
+      AMZNLINUX2: ami-08155c9ee8b845e35
+    af-south-1:
+      AMZNLINUX2: ami-0cec12e29ebe3f0d5
+    eu-south-1:
+      AMZNLINUX2: ami-0759301b88845d121
+    ap-northeast-3:
+      AMZNLINUX2: ami-024125eb5035fd485
+    us-gov-east-1:
+      AMZNLINUX2: ami-0e7e977f
+    us-gov-west-1:
+      AMZNLINUX2: ami-acbd84cd
+    cn-north-1:
+      AMZNLINUX2: ami-0f30329b403b2cd2f
+    cn-northwest-1:
+      AMZNLINUX2: ami-0b9e03ed3ef793940
+Rules:
+  PasswordOrMFAToken:
+    Assertions:
+      - Assert: !Or
+          - !And
+            - !Equals [!Ref BoomiPassword, '']
+            - !Not [!Equals [!Ref BoomiInstallToken, '']]
+
+          - !And
+            - !Not [!Equals [!Ref BoomiPassword, '']]
+            - !Equals [!Ref BoomiInstallToken, '']
+        AssertDescription: You must supply either a password *or* an MFA installation token.
+Conditions:
+  InstallTokenProvided:  !Not [!Equals [!Ref BoomiInstallToken, '']]
 Resources:
-  LoadBalancerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  AtomWaitHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
+  AtomWaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
     Properties:
-      GroupDescription: boomi-elb
-      VpcId: !Ref VPCID
-      SecurityGroupIngress:
-      - CidrIp: 0.0.0.0/0
-        FromPort: 22
-        IpProtocol: tcp
-        ToPort: 22
-      - CidrIp: 0.0.0.0/0
-        FromPort: 9090
-        IpProtocol: tcp
-        ToPort: 9090
+      Handle: !Ref 'AtomWaitHandle'
+      Timeout: "900"
+      Count: 1
   BoomiSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -193,101 +197,117 @@ Resources:
         IpProtocol: tcp
         SourceSecurityGroupId: !Ref BastionSecurityGroupID
         ToPort: 22
-      - FromPort: 9090
-        IpProtocol: tcp
-        SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
-        ToPort: 9090
-  LaunchConfiguration:
-    Type: AWS::AutoScaling::LaunchConfiguration
+  AtomInstanceEBS:
+    Type: AWS::EC2::Volume
     Properties:
+      Size: !Ref BoomiInstanceVolumeSize
+      Encrypted: true
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      Tags:
+        - Key: Name
+          Value: Atom
+    DeletionPolicy: Snapshot
+  AtomInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref 'AtomName'
       ImageId:
         !FindInMap
         - AWSAMIRegionMap
         - Ref: AWS::Region
-        - AMZNLINUXHVM
+        - AMZNLINUX2
       InstanceType:
         Ref: InstanceType
-      BlockDeviceMappings:
-      - DeviceName: /dev/xvda
-        Ebs:
-          VolumeType: gp2
-          DeleteOnTermination: false
-          VolumeSize:
-            Ref: BoomiInstanceVolumeSize
-      SecurityGroups:
-      - !Ref BoomiSecurityGroup
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      NetworkInterfaces:
+        - GroupSet:
+            - !Ref BoomiSecurityGroup
+          AssociatePublicIpAddress: false
+          DeviceIndex: '0'
+          DeleteOnTermination: true
+          SubnetId: !Ref PrivateSubnet1ID
+      Volumes:
+        -
+          Device: "/dev/xvdf"
+          VolumeId: !Ref AtomInstanceEBS
       KeyName:
         Ref: KeyPairName
       UserData:
         Fn::Base64: !Sub |
-          #!/bin/bash -ex
-          yum install -y python-setuptools
-          yum install -y wget
-          mkdir -p /opt/aws/bin
-          wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-          easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource LaunchConfiguration --region ${AWS::Region}
+          #!/bin/bash
+          export PATH=$PATH:/usr/local/bin
+          yum update -y 
+          yum install git -y
+          git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git /quickstart-linux-utilities
+          cd /quickstart-linux-utilities
+          source quickstart-cfn-tools.source
+          qs_update-os
+          qs_aws-cfn-bootstrap
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AtomInstance --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? '${AtomWaitHandle}'
     Metadata:
       AWS::CloudFormation::Init:
         config:
           packages:
             yum:
               java-1.8.0-openjdk: []
-          sources:
-            /root/atom_install.sh: https://platform.boomi.com/atom/atom_install64.sh
+          files:
+            /tmp/atom.service:
+              content: !Sub |
+                [Unit]
+                Description=Dell Boomi Atom
+                After=network.target
+                RequiresMountsFor=/opt/boomi/Atom_${AtomName}
+                [Service]
+                Type=forking
+                User=root
+                Restart=always
+                ExecStart=/opt/boomi/Atom_${AtomName}/bin/atom start
+                ExecStop=/opt/boomi/Atom_${AtomName}/bin/atom stop
+                ExecReload=/opt/boomi/Atom_${AtomName}/bin/atom restart
+                [Install]
+                WantedBy=multi-user.target
+              mode: "000644"
+              owner: "root"
+              group: "root"
           commands:
-            01_create_boomi_user:
-              command: !Sub useradd --system boomi -d ${BoomiInstallDir}
-            02_create_usr_local_boomi:
-              command: 'mkdir /usr/local/boomi && chown boomi: /usr/local/boomi'
-            03_setup_boomi_account_env:
-              command: echo JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64 >> ~boomi/.bash_profile
-                && echo export PATH=$JAVA_HOME/bin:$PATH >> ~boomi/.bash_profile
-            04_move_installdir_to_boomi_homedir:
-              command: mv /root/atom_install.sh ~boomi/atom_install.sh
-            05_change_perms_installer:
-              command: chmod +x ~boomi/atom_install.sh
-            05_run_atom_installer:
-              command: '!Sub runuser -u boomi -c ${BoomiInstallDir}/atom_install.sh  -q
-                console -BoomiUsername=${BoomiUsername} -BoomiPassword=${BoomiPassword}  -AtomName=${AtomName}
-                -BoomiAccountId=${BoomiAccountID} -dir ${BoomiInstallDir}'
-  AutoScaling:
-    Type: AWS::AutoScaling::AutoScalingGroup
+            02_create_xfs:
+              command: mkfs -t xfs /dev/nvme1n1 && mkdir /opt/boomi && sh -c 'echo "/dev/nvme1n1 /opt/boomi xfs defaults,noatime 0 0" >> /etc/fstab' && mount -a
+            03_set_hostname:
+              command: ln -sf /opt/boomi/Atom_$(curl http://169.254.169.254/latest/meta-data/local-hostname | sed -r 's/[-.]+/_/g')/jre/bin/java /usr/bin/java && . ~/.bash_profile
+            04_set_perms_and_create_dir:
+              command: cd /usr/local && sudo mkdir boomi && sudo chown ec2-user:ec2-user boomi && cd /usr/local/boomi
+            05_get_installer:
+              command: wget -P /usr/local/boomi https://platform.boomi.com/atom/atom_install64.sh && chmod +x /usr/local/boomi/atom_install64.sh
+            06_create_installer_dir:
+              command: !Sub sudo mkdir -p ${BoomiInstallDir} && sudo chown -R ec2-user:ec2-user ${BoomiInstallDir} && cd /usr/local/boomi
+            07_start_installer:
+              command: !If
+                - InstallTokenProvided
+                - !Sub |
+                  echo "installing via token: /usr/local/boomi/atom_install64.sh -q console -VinstallToken=${BoomiInstallToken} -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}" && /usr/local/boomi/atom_install64.sh -q console -VinstallToken=${BoomiInstallToken} -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
+                - !Sub |
+                  echo "installing via username/password: /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword=******** -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}" && /usr/local/boomi/atom_install64.sh -q console -Vusername=${BoomiUsername} -Vpassword="${BoomiPassword}" -VatomName=${AtomName} -VaccountId=${BoomiAccountID} -dir ${BoomiInstallDir}
+            08_create_service:
+              command: mv /tmp/atom.service /lib/systemd/system/atom.service
+            09_start_service:
+              command: systemctl enable atom && systemctl start atom
+  EcInstanceAutorecoverAlarm:
+    Type: AWS::CloudWatch::Alarm
     Properties:
-      VPCZoneIdentifier:
-      - Ref: PrivateSubnet1ID
-      - Ref: PrivateSubnet2ID
-      LaunchConfigurationName: !Ref LaunchConfiguration
-      MinSize: '1'
-      MaxSize: '1'
-      DesiredCapacity: '1'
-      Cooldown: '300'
-      HealthCheckGracePeriod: 300
-      HealthCheckType: ELB
-      LoadBalancerNames:
-      - Ref: ElasticLoadBalancer
-      Tags:
-      - PropagateAtLaunch: true
-        Value: Boomi
-        Key: Name
-  ElasticLoadBalancer:
-    Type: AWS::ElasticLoadBalancing::LoadBalancer
-    Properties:
-      Subnets:
-      - Ref: PublicSubnet1ID
-      - Ref: PublicSubnet2ID
-      CrossZone: true
-      Listeners:
-      - LoadBalancerPort: '22'
-        InstancePort: '22'
-        Protocol: TCP
-      HealthCheck:
-        Target: TCP:22
-        HealthyThreshold: '3'
-        UnhealthyThreshold: '5'
-        Interval: '30'
-        Timeout: '5'
-      SecurityGroups:
-      - !Ref LoadBalancerSecurityGroup
+      AlarmActions:
+        - !Sub arn:aws:automate:${AWS::Region}:ec2:recover
+      AlarmDescription: Recover instance if its status checks fail.
+      Namespace: AWS/EC2
+      MetricName: StatusCheckFailed_System
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref AtomInstance
+      EvaluationPeriods: 2
+      Period: 60
+      Statistic: Minimum
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: 0
 ...
