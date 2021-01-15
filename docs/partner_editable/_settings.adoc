@@ -2,8 +2,8 @@
 :partner-product-name: Dell Boomi Atom
 :partner-product-short-name: Dell Boomi Atom
 :partner-company-name: Dell, Inc.
-:doc-month: September
-:doc-year: 2020
+:doc-month: January
+:doc-year: 2021
 :quickstart-contributors: Sean Williams, Ryan Vanderwerf, Andrew Glenn, AWS
 :deployment_time: 30 minutes / 1 hour
 :default_deployment_region: us-east-1
