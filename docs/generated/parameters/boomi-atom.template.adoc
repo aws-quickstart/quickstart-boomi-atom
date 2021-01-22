@@ -1,0 +1,28 @@
+
+.Network Configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|VPC ID
+(`VPCID`)|`**__Requires input__**`|Select the VPC to deploy into.|Private Subnet ID
+(`PrivateSubnet1ID`)|`**__Requires input__**`|The ID of the private subnet in Availability Zone 1 in your existing VPC.|**NO_LABEL**
+(`BastionSecurityGroupID`)|`**__Requires input__**`|NO_DESCRIPTION
+|===
+.Amazon EC2 configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Boomi Atom instance type
+(`InstanceType`)|`m5.xlarge`|The instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.|SSH key name
+(`KeyPairName`)|`**__Requires input__**`|A public/private key pair, which allows you to connect securely to your instance after it launches.|EBS Volume size for Boomi Atom instance
+(`BoomiInstanceVolumeSize`)|`100`|The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+|===
+.Dell Boomi Atom configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Atom Name
+(`AtomName`)|`atom1`|The name given to the Boomi Atom instance.|Boomi account ID
+(`BoomiAccountID`)|`**__Requires input__**`|The Dell Boomi account ID that you want to associate the new Atom with.|Boomi Username - Not needed if authenticating via installation token
+(`BoomiUsername`)|`**__Requires input__**`|The email account associated with the Dell Boomi account.|Boomi password
+(`BoomiPassword`)|`**__Requires input__**`|Please enter your Boomi Account Password|Boomi Installation Token
+(`BoomiInstallToken`)|`**__Blank string__**`|Please enter your Boomi Install Token|Boomi install directory
+(`BoomiInstallDir`)|`/opt/boomi/`|The installation directory for Dell Boomi.
+|===
