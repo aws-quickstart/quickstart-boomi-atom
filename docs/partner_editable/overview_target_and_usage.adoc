@@ -1,12 +1,6 @@
 // Replace the content in <>
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
-This Quick Start reference deployment guide provides step-by-step
-instructions for deploying Dell Boomi Atom on the AWS Cloud.
+This Quick Start is for users who are looking for an integration platform as a service (iPaaS) solution that can be hosted on AWS. It deploys a Dell Boomi Atom server on AWS but allows you to manage the server through the http://www.platform.boomi.com[Dell Boomi Dashboard]. There are two deployment options, so you can deploy Dell Boomi Atom server onto a new AWS virtual private cloud (VPC), or onto your existing VPC.
 
-
-This Quick Start is for users who are looking for an integration
-platform as a service (iPaaS) that can be hosted on AWS. This Quick
-Start enables you to deploy a Dell Boomi Atom server on AWS and manage
-the server through a traditional http://www.platform.boomi.com[Dell
-Boomi Dashboard].
+This Quick Start reference deployment guide walks you through the steps for deploying Dell Boomi Atom on the AWS Cloud. It does not require deep knowledge of AWS or Linux system administration.

@@ -2,9 +2,4 @@
 // Briefly describe the software. Use consistent and clear branding.
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-Dell Boomi is an Integration platform designed to perform data
-integrations across many business domains. Dell Boomi enables you to
-transform data from one source and load it into another source, as
-needed. By launching a Boomi Atom server with this Quick Start, you will
-have a complete Dell Boomi Atom deployment on AWS without needing deep
-domain knowledge in AWS or Linux system administration.
+Dell Boomi Atom is a runtime engine to execute integration processes that connect cloud-based, on-premises, or hybrid applications and data.
