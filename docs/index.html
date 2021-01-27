@@ -835,11 +835,24 @@ p.footer-text a{color:#d7d8d8}
 <img src="https://aws-quickstart.s3.amazonaws.com/quickstart-boomi-atom/docs/boilerplate/.images/aws-quickstart-graphic.png" alt="QS" width="80" height="80">
 </div>
 </div>
-<div class="paragraph text-center">
+<h3 id="_draft_document_unofficial_guidance" class="discrete text-center">DRAFT DOCUMENT / UNOFFICIAL GUIDANCE</h3>
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/__settings</em>.adoc</code></strong>_</p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph text-center">
 <p><strong>January 2021</strong><br>
 <em>Sean Williams, Ryan Vanderwerf, and Andrew Glenn, AWS Quick Start team</em></p>
-</div>
-<div class="admonitionblock tip text-left">
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
@@ -861,16 +874,23 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start reference deployment guide provides step-by-step
-instructions for deploying Dell Boomi Atom on the AWS Cloud.</p>
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/overview_target_and_usage.adoc</code></strong></em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>This Quick Start is for users who are looking for an integration platform as a service (iPaaS) solution that can be hosted on AWS. It deploys a Dell Boomi Atom server on AWS but allows you to manage the server through the <a href="http://www.platform.boomi.com">Dell Boomi Dashboard</a>. There are two deployment options, so you can deploy Dell Boomi Atom server onto a new AWS virtual private cloud (VPC), or onto your existing VPC.</p>
 </div>
 <div class="paragraph">
-<p>This Quick Start is for users who are looking for an integration
-platform as a service (iPaaS) that can be hosted on AWS. This Quick
-Start enables you to deploy a Dell Boomi Atom server on AWS and manage
-the server through a traditional <a href="http://www.platform.boomi.com">Dell
-Boomi Dashboard</a>.</p>
-</div>
+<p>This Quick Start reference deployment guide walks you through the steps for deploying Dell Boomi Atom on the AWS Cloud. It does not require deep knowledge of AWS or Linux system administration.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -889,13 +909,20 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 <h2 id="_dell_boomi_atom_on_aws">Dell Boomi Atom on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Dell Boomi is an Integration platform designed to perform data
-integrations across many business domains. Dell Boomi enables you to
-transform data from one source and load it into another source, as
-needed. By launching a Boomi Atom server with this Quick Start, you will
-have a complete Dell Boomi Atom deployment on AWS without needing deep
-domain knowledge in AWS or Linux system administration.</p>
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/product_description.adoc</code></strong></em></p>
 </div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Dell Boomi Atom is a runtime engine to execute integration processes that connect cloud-based, on-premises, or hybrid applications and data.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -929,62 +956,80 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start requires an account with Dell Boomi. The Dell Boomi
-account used to stage this Quick Start will determine the licensing
-model that applies. Licensing costs will be managed by Dell Boomi, and
-Dell Boomi will apply standard connector metering charges to workloads
-that use a Dell Boomi account to run on this Atom. This Quick Start can
-also be used to deploy a Dell Boomi Atom server that will run trial or
-training workloads.</p>
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/licenses.adoc</code></strong></em></p>
 </div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>This Quick Start requires a Dell Boomi account. The Dell Boomi account you use to deploy this Quick Start will determine the licensing model that applies. Licensing costs are managed by Dell Boomi, and Dell Boomi applies standard connector metering charges to workloads using a Dell Boomi account. However, you can also use this Quick Start to deploy a Dell Boomi Atom server that will run trial or training workloads.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start for a new virtual private cloud (VPC) with
-default parameters builds the following <em>Dell Boomi Atom</em> environment in the
-AWS Cloud.</p>
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/architecture.adoc</code></strong></em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Deploying this Quick Start into a new virtual private cloud (VPC) with default parameters builds the following <em>Dell Boomi Atom</em> environment in the AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<a class="image" href="images/architecture_diagram.png"><img src="images/image1.png" alt="Architecture" width="648" height="439"></a>
+<a class="image" href="images/architecture_diagram.png"><img src="images/architecture_diagram.png" alt="Architecture" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 1. Quick Start architecture for <em>Dell Boomi Atom</em> on AWS</div>
+<div class="title">Figure 1. Quick Start architecture for Dell Boomi Atom on AWS</div>
 </div>
 <div class="paragraph">
-<p>As shown in Figure 1, the Quick Start sets up the following:</p>
+<p>As shown in <a href="#architecture1">Figure 1</a>, the Quick Start sets up the following:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>A VPC configured with public and private subnets according to AWS best
-practices, to provide you with your own virtual network on AWS*</p>
+<p>A VPC configured with a public and private subnet according to AWS best practices, to provide you with your own virtual network on AWS.*</p>
 </li>
 <li>
-<p>In the public subnets, managed NAT gateways to allow outbound internet
-access for resources in the private subnets*</p>
+<p>In the public subnet, a managed NAT gateway to allow outbound internet access for resources in the private subnet.</p>
 </li>
 <li>
-<p>In the public subnets, a Linux bastion host in an Auto Scaling group
-to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute
-Cloud (Amazon EC2) instances in public and private subnets</p>
+<p>In the public subnet, a Linux bastion host to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.</p>
 </li>
 <li>
-<p>In the private subnets, a Boomi Atom instance</p>
+<p>In the private subnet, a Boomi Atom instance running Amazon Linux 2.</p>
 </li>
 <li>
-<p>Atom instances running Amazon Linux 2</p>
-</li>
-<li>
-<p>Cloudwatch alarm for auto-recovery in case of instance failure</p>
+<p>An AWS Cloudwatch alarm for auto-recovery in case of instance failure.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Please note: Due to limitations of using single-use installation tokens, Atom instances created from this quickstart are not part of auto scale groups or load balancers. If you have a need for high availability Atoms, please look into deployment of Boomi Molecule. A Boomi Molecule Quickstart is available at <a href="https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/" class="bare">https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/</a>.</p>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Because of the limitations of single-use installation tokens, this Quick Start does not deploy Atom instances in Auto Scaling groups or load balancers. If you require highly available Boomi Atom instances, consider deploying Boomi Molecule, for which a Quick Start is also available. For more information about the Dell Boomi Molecule Quick Start, see <a href="https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/" class="bare">https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/</a>.
+</td>
+</tr>
+</table>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -999,6 +1044,15 @@ and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">AW
 deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/specialized_knowledge.adoc</code></strong></em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>This Quick Start assumes familiarity with basic concepts of networking, bastion hosts, volume sizing, and
 compute performance. It also assumes familiarity with the Dell Boomi
 variables that are required when deploying an Atom server. These
@@ -1007,7 +1061,10 @@ Account Name, and Account Password. This Quick Start follows the
 patterns for Unattended Dell Boomi Atom deployments found on the
 <a href="http://help.boomi.com/atomsphere/GUID-27BDD6B1-E6BD-48C9-8C6D-EC1B2CA60316.html">Dell
 Boomi website</a>.</p>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_aws_account">AWS account</h3>
@@ -1028,6 +1085,10 @@ Boomi website</a>.</p>
 <div class="paragraph">
 <p>If necessary, request <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">service quota increases</a> for the following resources. You might request quota increases to avoid exceeding the default limits for any resources that are shared across multiple deployments. The <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">Service Quotas console</a> displays your usage and quotas for some aspects of some services. For more information, see <a href="https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html" target="_blank" rel="noopener">What is Service Quotas?</a> and <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html" target="_blank" rel="noopener">AWS service quotas</a>.</p>
 </div>
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/service_limits.adoc</code></strong></em></p>
+</div>
+<div class="preview_mode">
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1079,14 +1140,20 @@ Boomi website</a>.</p>
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect3">
 <h4 id="_supported_regions">Supported Regions</h4>
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/regions.adoc</code></strong></em></p>
+</div>
+<div id="preview_mode">
 <div class="paragraph">
 <p>This
 deployment can be deployed in all AWS Regions. For a current list of
 supported regions, see
 <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#elasticfilesystem-region">AWS
 Regions and Endpoints</a> in the AWS documentation.</p>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1107,15 +1174,36 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 <p>Before launching the Quick Start, you must sign in to the AWS Management Console with IAM permissions for the resources that the templates deploy. The <em>AdministratorAccess</em> managed policy within IAM provides sufficient permissions, although your organization may choose to use a custom policy with more restrictions. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html" target="_blank" rel="noopener">AWS managed policies for job functions</a>.</p>
 </div>
 <div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/pre-reqs.adoc</code></strong></em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>To install a Boomi Atom, you will need either:
     - valid Atom license
     - valid installation token (MFA Compatible)
     - username/password with permissions to create Atoms</p>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_deployment_options">Deployment options</h4>
 <div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/deployment_options.adoc</code></strong></em></p>
+</div>
+<table class="tableblock frame-all grid-all stretch preview_mode">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>This Quick Start provides two deployment options:</p>
 </div>
 <div class="ulist">
@@ -1143,7 +1231,10 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 <p>Deploy via username/password of user authorized to deploy Atoms (Not MFA friendly)</p>
 </li>
 </ul>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -1151,6 +1242,10 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 <div class="sect1">
 <h2 id="_deployment_steps">Deployment steps</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/deploy_steps.adoc</code></strong></em></p>
+</div>
+<div class="preview_mode">
 <div class="sect2">
 <h3 id="_sign_in_to_your_aws_account">Sign in to your AWS account</h3>
 <div class="olist arabic">
@@ -1235,6 +1330,7 @@ If you’re deploying Dell Boomi Atom into an existing VPC, make sure that your 
 <p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary.</p>
 </li>
 </ol>
+</div>
 </div>
 <div class="paragraph">
 <p>In the following tables, parameters are listed by category and described separately for the deployment options. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
@@ -1587,6 +1683,10 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 </div>
 <div class="title">Figure 2. Dell Boomi Atom outputs after successful deployment</div>
 </div>
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/additional_info.adoc</code></strong></em></p>
+</div>
+<div class="preview_mode">
 </div>
 </div>
 </div>
@@ -1689,6 +1789,10 @@ Linux commands.</p>
 <div class="paragraph">
 <p>Now you can generate the installation token. You can specify up to 24 hours duration for the token before it expires.</p>
 </div>
+<div class="paragraph">
+<p><em><strong>This portion of the deployment guide is located at <code>docs/partner_editable/faq_troubleshooting.adoc</code></strong></em></p>
+</div>
+<div class="preview_mode">
 </div>
 </div>
 </div>
@@ -1721,6 +1825,7 @@ When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, 
 </div>
 <div class="paragraph">
 <p><strong>A.</strong> We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS documentation</a>.</p>
+</div>
 </div>
 </div>
 </div>

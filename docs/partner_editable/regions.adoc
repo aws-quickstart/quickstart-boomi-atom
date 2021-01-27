@@ -1,5 +1,1 @@
-This
-deployment can be deployed in all AWS Regions. For a current list of
-supported regions, see
-https://docs.aws.amazon.com/general/latest/gr/rande.html#elasticfilesystem-region[AWS
-Regions and Endpoints] in the AWS documentation.
+This deployment can be deployed in all AWS Regions. For a current list of supported regions, see https://docs.aws.amazon.com/general/latest/gr/rande.html#elasticfilesystem-region[AWS Service Endpoints].
