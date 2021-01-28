@@ -4,11 +4,11 @@ Description: Boomi Atom Installation Script. This creates a VPC, Public Subnets 
   Private Subnets, and stages a Dell Boomi Atom. (qs-1r0e5j2b9)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Launch into an existing VPC"
+    EntrypointName: Launch into an existing VPC
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
-        default: Network Configuration
+        default: Network configuration
       Parameters:
       - VPCID
       - PrivateSubnet1ID
@@ -36,33 +36,30 @@ Metadata:
       InstanceType:
         default: Boomi Atom instance type
       BoomiInstanceVolumeSize:
-        default: EBS Volume size for Boomi Atom instance
+        default: EBS volume size for Boomi Atom instance
       BoomiAccountID:
         default: Boomi account ID
       BoomiUsername:
-        default: Boomi Username - Not needed if authenticating via installation token
+        default: Boomi username (not needed if authenticating with an installation token)
       BoomiPassword:
-        default: Boomi password
+        default: Boomi password (not needed if authenticating with an installation token)
       BoomiInstallToken:
-        default: Boomi Installation Token
+        default: Boomi installation token
       PrivateSubnet1ID:
-        default: Private Subnet ID
+        default: Private subnet ID
       AtomName:
         default: Atom Name
       BoomiInstallDir:
         default: Boomi install directory
 Parameters:
   KeyPairName:
-    Description: A public/private key pair, which allows you to connect securely to
-      your instance after it launches.
+    Description: A public/private key pair, which allows you to connect securely to your instance after it launches.
     Type: AWS::EC2::KeyPair::KeyName
-    ConstraintDescription: Must be the name of an existing Keyname
+    ConstraintDescription: Must be an existing key name.
   BastionSecurityGroupID:
     Type: AWS::EC2::SecurityGroup::Id
   InstanceType:
-    Description: The instance type of the Boomi host. You can choose a different instance
-      type from the drop-down list of instances that meet the requirements for running
-      a Dell Boomi Atom server.
+    Description: Instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.
     Type: String
     Default: m5.xlarge
     AllowedValues:
@@ -76,39 +73,36 @@ Parameters:
       - c5.2xlarge
       - c5.4xlarge
   BoomiInstanceVolumeSize:
-    Description: The size of the Amazon EBS volume attached to the Atom instance.
-      Size range is 1 GiB - 16 TiB.
+    Description: Size of the Amazon EBS volume attached to the Atom instance. Size range is 1GiB–16TiB.
     Type: Number
     Default: 100
   VPCID:
-    Description: Select the VPC to deploy into.
+    Description: VPC to deploy into.
     Type: AWS::EC2::VPC::Id
   PrivateSubnet1ID:
-    Description: The ID of the private subnet in Availability Zone 1 in your existing
-      VPC.
+    Description: ID of the private subnet, in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   BoomiUsername:
-    Description: The email account associated with the Dell Boomi account.
+    Description: Boomi account username.
     Type: String
   BoomiPassword:
-    Description: Please enter your Boomi Account Password
+    Description: Boomi account password.
     Type: String
     NoEcho: true
   BoomiAccountID:
-    Description: The Dell Boomi account ID that you want to associate the new Atom
-      with.
+    Description: Boomi account ID that you want to associate with the new Atom.
     Type: String
   BoomiInstallDir:
-    Description: The installation directory for Dell Boomi.
+    Description: Boomi installation directory.
     Type: String
     Default: /opt/boomi/
   AtomName:
-    Description: The name given to the Boomi Atom instance.
+    Description: Boomi Atom instance name.
     Type: String
     Default: atom1
     AllowedPattern: "[a-zA-Z0-9_]*"
   BoomiInstallToken:
-    Description: Please enter your Boomi Install Token
+    Description: Boomi installation token.
     Type: String
     Default: ''
 Mappings:
@@ -174,7 +168,7 @@ Rules:
           - !And
             - !Not [!Equals [!Ref BoomiPassword, '']]
             - !Equals [!Ref BoomiInstallToken, '']
-        AssertDescription: You must supply either a password *or* an MFA installation token.
+        AssertDescription: You must supply either a password or an MFA installation token.
 Conditions:
   InstallTokenProvided:  !Not [!Equals [!Ref BoomiInstallToken, '']]
 Resources:

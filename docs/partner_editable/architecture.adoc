@@ -1,24 +1,18 @@
-Deploying this Quick Start for a new virtual private cloud (VPC) with
-default parameters builds the following _{partner-product-short-name}_ environment in the
-AWS Cloud.
+Deploying this Quick Start into a new virtual private cloud (VPC) with default parameters builds the following {partner-product-short-name} environment in the AWS Cloud.
 
 // Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors giude)
+:xrefstyle: short
 [#architecture1]
-.Quick Start architecture for _{partner-product-short-name}_ on AWS
+.Quick Start architecture for {partner-product-short-name} on AWS
 [link=images/architecture_diagram.png]
-image::../images/image1.png[Architecture,width=648,height=439]
+image::../images/architecture_diagram.png[Architecture,width=100%,height=100%]
 
-As shown in Figure 1, the Quick Start sets up the following:
+As shown in <<architecture1>>, the Quick Start sets up the following:
 
-* A VPC configured with public and private subnets according to AWS best
-practices, to provide you with your own virtual network on AWS*
-* In the public subnets, managed NAT gateways to allow outbound internet
-access for resources in the private subnets*
-* In the public subnets, a Linux bastion host in an Auto Scaling group
-to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute
-Cloud (Amazon EC2) instances in public and private subnets
-* In the private subnets, a Boomi Atom instance
-* Atom instances running Amazon Linux 2
-* Cloudwatch alarm for auto-recovery in case of instance failure
+* A VPC configured with public and private subnets according to AWS best practices, to provide you with your own virtual network on AWS.
+* In the public subnet, a managed NAT gateway to allow outbound internet access for resources in the private subnet.
+* In the public subnet, a Linux bastion host to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.
+* In the private subnet, a Boomi Atom installed on an Amazon EC2 instance running Amazon Linux 2.
+* An AWS Cloudwatch alarm for auto-recovery in case of instance failure.
 
-Please note: Due to limitations of using single-use installation tokens, Atom instances created from this quickstart are not part of auto scale groups or load balancers. If you have a need for high availability Atoms, please look into deployment of Boomi Molecule. A Boomi Molecule Quickstart is available at https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/.
+NOTE: Because of the limitations of single-use installation tokens, this Quick Start does not deploy Atom instances in Auto Scaling groups or load balancers. For highly available Boomi Atom instances, consider deploying Boomi Molecule, for which a Quick Start is also available. For more information about the Dell Boomi Molecule Quick Start, see https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/[Boomi Molecule on AWS].
