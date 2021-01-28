@@ -1,6 +1,8 @@
 // Replace the content in <>
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
-This Quick Start is for users who are looking for an integration platform as a service (iPaaS) solution hosted on the AWS Cloud. It deploys a Dell Boomi Atom on an Amazon EC2 instance but allows you to manage the Atom on the https://www.platform.boomi.com[Dell Boomi AtomSphere dashboard^]. There are two deployment options. You can deploy Dell Boomi Atom in a new AWS virtual private cloud (VPC), or your existing VPC.
+This Quick Start is for users who are looking for an integration platform as a service (iPaaS) solution hosted on the AWS Cloud. It deploys a Dell Boomi Atom on an Amazon Elastic Compute Cloud (Amazon EC2) instance but allows you to manage the Atom on the https://www.platform.boomi.com[Dell Boomi AtomSphere dashboard^]. There are two deployment options. You can deploy Dell Boomi Atom in a new AWS virtual private cloud (VPC), or your existing VPC.
 
 This Quick Start reference deployment guide walks you through the steps for deploying Dell Boomi Atom on the AWS Cloud. It does not require deep knowledge of AWS or Linux system administration.
+
+NOTE: Because of the limitations of single-use installation tokens, this Quick Start does not deploy Auto Scaling groups or load balancers. To deploy highly available Boomi Atom instances with multiple nodes and load balancing, consider deploying https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/[Boomi Molecule on AWS].

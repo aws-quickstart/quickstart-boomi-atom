@@ -12,7 +12,6 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * A VPC configured with public and private subnets according to AWS best practices, to provide you with your own virtual network on AWS.
 * In the public subnet, a managed NAT gateway to allow outbound internet access for resources in the private subnet.
 * In the public subnet, a Linux bastion host to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.
-* In the private subnet, a Boomi Atom installed on an Amazon EC2 instance running Amazon Linux 2.
-* An AWS Cloudwatch alarm for auto-recovery in case of instance failure.
+* In the private subnet, a Dell Boomi Atom installed on an Amazon EC2 instance running Amazon Linux 2.
+* An Amazon Cloudwatch alarm for auto-recovery in case of instance failure.
 
-NOTE: Because of the limitations of single-use installation tokens, this Quick Start does not deploy Atom instances in Auto Scaling groups or load balancers. For highly available Boomi Atom instances, consider deploying Boomi Molecule, for which a Quick Start is also available. For more information about the Dell Boomi Molecule Quick Start, see https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/[Boomi Molecule on AWS].

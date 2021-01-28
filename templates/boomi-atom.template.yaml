@@ -36,30 +36,30 @@ Metadata:
       InstanceType:
         default: Boomi Atom instance type
       BoomiInstanceVolumeSize:
-        default: EBS volume size for Boomi Atom instance
+        default: Amazon EBS volume size for Boomi Atom instance
       BoomiAccountID:
         default: Boomi account ID
       BoomiUsername:
-        default: Boomi username (not needed if authenticating with an installation token)
+        default: Boomi username
       BoomiPassword:
-        default: Boomi password (not needed if authenticating with an installation token)
+        default: Boomi password
       BoomiInstallToken:
         default: Boomi installation token
       PrivateSubnet1ID:
         default: Private subnet ID
       AtomName:
-        default: Atom Name
+        default: Atom name
       BoomiInstallDir:
         default: Boomi install directory
 Parameters:
   KeyPairName:
-    Description: A public/private key pair, which allows you to connect securely to your instance after it launches.
+    Description: Key pair that allows you to connect securely to your instance after it launches.
     Type: AWS::EC2::KeyPair::KeyName
-    ConstraintDescription: Must be an existing key name.
+    ConstraintDescription: Must be an existing name.
   BastionSecurityGroupID:
     Type: AWS::EC2::SecurityGroup::Id
   InstanceType:
-    Description: Instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.
+    Description: Boomi host instance type.
     Type: String
     Default: m5.xlarge
     AllowedValues:
@@ -83,14 +83,14 @@ Parameters:
     Description: ID of the private subnet, in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   BoomiUsername:
-    Description: Boomi account username.
+    Description: Boomi account username. (Not required if using a Boomi installation token.)
     Type: String
   BoomiPassword:
-    Description: Boomi account password.
+    Description: Boomi account password. (Not required if using a Boomi installation token.)
     Type: String
     NoEcho: true
   BoomiAccountID:
-    Description: Boomi account ID that you want to associate with the new Atom.
+    Description: Boomi account ID to associate with the new Atom.
     Type: String
   BoomiInstallDir:
     Description: Boomi installation directory.
