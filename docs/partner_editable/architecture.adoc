@@ -9,7 +9,7 @@ image::../images/architecture_diagram.png[Architecture,width=100%,height=100%]
 
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
-* A VPC configured with a public and private subnet according to AWS best practices, to provide you with your own virtual network on AWS.*
+* A VPC configured with public and private subnets according to AWS best practices, to provide you with your own virtual network on AWS.
 * In the public subnet, a managed NAT gateway to allow outbound internet access for resources in the private subnet.
 * In the public subnet, a Linux bastion host to allow inbound Secure Shell (SSH) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.
 * In the private subnet, a Boomi Atom instance running Amazon Linux 2.

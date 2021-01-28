@@ -128,8 +128,7 @@ Parameters:
     Description: The CIDR block for the private subnet, located in Availability Zone 2.
     Type: String
   AvailabilityZones:
-    Description: Availability Zones for the subnets in the VPC. This deployment uses two Availability Zones, and the logical order of your
-      selections is preserved.
+    Description: Select two Availability Zones for VPC subnets. The logical order of your selections is preserved in the deployment.
     Type: List<AWS::EC2::AvailabilityZone::Name>
   BoomiUsername:
     Description: Email account associated with the Dell Boomi account.

@@ -3,30 +3,23 @@
 
 == Test the deployment
 
-To navigate to the Boomi Atom Dashboard, https://platform.boomi.com/[log
-in] to your Dell Boomi account and navigate to the *Manage* drop-down
-menu. Select *Atom Management* to see the Atoms in your account. The
-newly created AWS EC2 instance Atom server will be displayed here. You
-can then attach the AWS EC2 instance Atom to any environment you have
-staged and deploy workloads to that Atom.
+To verify the deployment of the Atom in your Dell Boomi account, first log in to https://platform.boomi.com/[AtomSphere]. On the *Manage* menu, select *Atom Management*. The new Atom server deployed by this Quick Start is displayed under *Unattached Atoms*.
 
 [#unattached-atom]
-.Dell Boomi Dashboard with an Unattached AWS-managed Atom
+.Dell Boomi AtomSphere dashboard
 [link=images/image3.png]
 image::../images/image3.png[unattached-atom,width=648,height=397]
 
 
 == Best practices for using {partner-product-short-name} on AWS
 
-The Dell Boomi Atom that is deployed on AWS can be managed in the Dell
-Boomi Dashboard just as any other Atom is managed. Atoms can be attached
-to environments within an account and can have workloads deployed to
-them in those environments.
+The Dell Boomi Atom that is deployed by this Quick Start can be managed from the Dell
+Boomi AtomSphere dashboard. In the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach] the Atom to environments and deploy processes to it.
 
-In <<deployed-atom>>, a Dell Boomi Atom server has been deployed in a Dell Boomi
-account through this Quick Start. The Atom server is identified by the
+:xrefstyle: short
+In <<deployed-atom>>, the Atom server is identified by the
 DNS name `ip-172-30-7.186.ec2.internal`. The account contains two Dell
-Boomi environments: one labeled Production and the other labeled Test:
+Boomi environments, one labeled *Production* and the other labeled *Test*.
 
 [#deployed-atom]
 .Dell Boomi Dashboard with an Unattached AWS-managed Atom server
@@ -35,17 +28,13 @@ image::../images/image4.png[deployed-atom,width=648,height=258]
 
 == Security
 
-This Quick Start deploys a bastion host and a Dell Boomi Atom server
-into an AWS VPC. The bastion host is the only means of accessing the
-Dell Boomi Atom server at a command line level. The Dell Boomi Atom
-server is deployed into a private subnet and cannot be reached through
-the internet. The Boomi Atom server communicates through a NAT Gateway
+This Quick Start deploys a bastion host and a Dell Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Dell Boomi Atom server at a command line level. The Dell Boomi Atom server is deployed into a private subnet and cannot be reached through the internet. The Boomi Atom server communicates through a NAT Gateway
 for updates and patches.
 
 == Performance Monitoring
 
 Monitoring the CPU, network, and Amazon EBS performance of your AWS Dell
-Boomi Atom is done through Amazon CloudWatch metrics.
+Boomi Atom is done using Amazon CloudWatch metrics.
 
 CPU and network performance is measured in utilization, network in and
 out, network packets in and out, and system status checks.
@@ -62,9 +51,9 @@ Linux commands.
 // [link=images/image6.png]
 // image::../images/image6.png[image,width=648,height=220]
 
-=== Creating an Installation Token
+=== Creating a Boomi installer token
 
-You can create an installation token without having to share your login credentials for an Atom installation. If you are an administrator, follow the steps below to create an installation token:
+When deploying this Quick Start, you can specify an AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
 
 Go to Integration → Build → Create → Atom Runtime → Atom
 
@@ -77,3 +66,4 @@ Next expand ‘Security Options’.
 image:../images/atom-generated.png[image]
 
 Now you can generate the installation token. You can specify up to 24 hours duration for the token before it expires.
+
