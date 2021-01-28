@@ -8,7 +8,7 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
-        default: Network Configuration
+        default: Network configuration
       Parameters:
       - VPCID
       - PrivateSubnet1ID
@@ -40,9 +40,9 @@ Metadata:
       BoomiAccountID:
         default: Boomi account ID
       BoomiUsername:
-        default: Boomi Username (not needed if authenticating via installation token)
+        default: Boomi username (not needed if authenticating with an installation token)
       BoomiPassword:
-        default: Boomi password
+        default: Boomi password (not needed if authenticating with an installation token)
       BoomiInstallToken:
         default: Boomi installation token
       PrivateSubnet1ID:
@@ -73,7 +73,7 @@ Parameters:
       - c5.2xlarge
       - c5.4xlarge
   BoomiInstanceVolumeSize:
-    Description: Size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+    Description: Size of the Amazon EBS volume attached to the Atom instance. Size range is 1GiB–16TiB.
     Type: Number
     Default: 100
   VPCID:
@@ -83,17 +83,17 @@ Parameters:
     Description: ID of the private subnet, in Availability Zone 1 in your existing VPC.
     Type: AWS::EC2::Subnet::Id
   BoomiUsername:
-    Description: Email account associated with the Dell Boomi account.
+    Description: Boomi account username.
     Type: String
   BoomiPassword:
-    Description: Boomi Account password.
+    Description: Boomi account password.
     Type: String
     NoEcho: true
   BoomiAccountID:
-    Description: Dell Boomi account ID that you want to associate with the new Atom.
+    Description: Boomi account ID that you want to associate with the new Atom.
     Type: String
   BoomiInstallDir:
-    Description: Dell Boomi installation directory.
+    Description: Boomi installation directory.
     Type: String
     Default: /opt/boomi/
   AtomName:
@@ -168,7 +168,7 @@ Rules:
           - !And
             - !Not [!Equals [!Ref BoomiPassword, '']]
             - !Equals [!Ref BoomiInstallToken, '']
-        AssertDescription: You must supply either a password *or* an MFA installation token.
+        AssertDescription: You must supply either a password or an MFA installation token.
 Conditions:
   InstallTokenProvided:  !Not [!Equals [!Ref BoomiInstallToken, '']]
 Resources:

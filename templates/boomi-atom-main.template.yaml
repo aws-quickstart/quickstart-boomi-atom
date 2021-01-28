@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Boomi Atom installation script. This creates a VPC, public and private Subnets, and deploys a Dell Boomi Atom. (qs-1r0e5j27q)
+Description: Boomi Atom installation script. This creates a VPC, public and private subnets, and deploys a Dell Boomi Atom. (qs-1r0e5j27q)
 Metadata:
   QuickStartDocumentation:
     EntrypointName: Launch into a new VPC
@@ -82,9 +82,9 @@ Parameters:
   KeyPairName:
     Description: A public/private key pair that allows you to connect securely to your instance after it launches.
     Type: AWS::EC2::KeyPair::KeyName
-    ConstraintDescription: Must be the name of an existing Keyname
+    ConstraintDescription: Must be an existing key name.
   InstanceType:
-    Description: The instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.
+    Description: Boomi host instance type.
     Type: String
     Default: m5.xlarge
     AllowedValues:
@@ -94,7 +94,7 @@ Parameters:
       - r5.xlarge
       - c5.xlarge
   BoomiInstanceVolumeSize:
-    Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+    Description: The size of the Amazon EBS volume attached to the Atom instance. Size range is 1GiB–16TiB.
     Type: Number
     Default: 100
   VPCCIDR:
@@ -131,10 +131,10 @@ Parameters:
     Description: Select two Availability Zones for VPC subnets. The logical order of your selections is preserved in the deployment.
     Type: List<AWS::EC2::AvailabilityZone::Name>
   BoomiUsername:
-    Description: Email account associated with the Dell Boomi account.
+    Description: Boomi account username.
     Type: String
   BoomiPassword:
-    Description: Password associated with the Dell Boomi account.
+    Description: Boomi account password.
     Type: String
     NoEcho: true
   BoomiAccountID:
@@ -145,7 +145,7 @@ Parameters:
     Type: String
     Default: ''
   BoomiInstallDir:
-    Description: Dell Boomi installation directory.
+    Description: Boomi installation directory.
     Type: String
     Default: /opt/boomi/
   AtomName:

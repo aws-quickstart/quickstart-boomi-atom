@@ -7,7 +7,4 @@ This Quick Start provides two deployment options:
 
 The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and {partner-product-short-name} settings, as discussed later in this guide.
 
-In addition, there are two Boomi AtomSphere authentication options to create Atoms:
-
-* Deploy via one-time installation token (MFA-compatible)
-* Deploy via username/password of user authorized to deploy Atoms (Not MFA-compatible)
+When deploying this Quick Start, you can specify an AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. For instructions on generating a Boomi installer token, see link:#_generating_a_boomi_installer_token[Generating a Boomi installer token], later in this guide.

@@ -28,30 +28,23 @@ image::../images/image4.png[deployed-atom,width=648,height=258]
 
 == Security
 
-This Quick Start deploys a bastion host and a Dell Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Dell Boomi Atom server at a command line level. The Dell Boomi Atom server is deployed into a private subnet and cannot be reached through the internet. The Boomi Atom server communicates through a NAT Gateway
-for updates and patches.
+This Quick Start deploys a bastion host and a Dell Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Dell Boomi Atom server at a command line level. The Dell Boomi Atom server is deployed into a private subnet and cannot be reached through the internet. The Boomi Atom server communicates through a NAT gateway for updates and patches.
 
 == Performance Monitoring
 
-Monitoring the CPU, network, and Amazon EBS performance of your AWS Dell
-Boomi Atom is done using Amazon CloudWatch metrics.
+Monitoring the CPU, network, and Amazon EBS performance of your AWS Dell Boomi Atom is done using Amazon CloudWatch metrics.
 
-CPU and network performance is measured in utilization, network in and
-out, network packets in and out, and system status checks.
+CPU and network performance is measured in utilization, network in and out, network packets in and out, and system status checks.
 
-Amazon EBS volume performance is measured in read and write throughput,
-average read and write size, read and write bandwidth, read and write
-latency, and volume idle time.
+Amazon EBS volume performance is measured in read and write throughput, average read and write size, read and write bandwidth, read and write latency, and volume idle time. 
 
-Further monitoring of disk space and inode consumption must be performed
-at the command line level of the EC2 instance using the `df -h` and `df -i`
-Linux commands.
+Further monitoring of disk space and inode consumption must be performed at the command line level of the EC2 instance using the `df -h` and `df -i` Linux commands.
 // 
 // [#perf-monitoring]
 // [link=images/image6.png]
 // image::../images/image6.png[image,width=648,height=220]
 
-=== Creating a Boomi installer token
+== Generating a Boomi installer token
 
 When deploying this Quick Start, you can specify an AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
 
