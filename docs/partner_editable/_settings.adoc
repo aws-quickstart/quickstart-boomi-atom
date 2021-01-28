@@ -5,7 +5,7 @@
 :doc-month: January
 :doc-year: 2021
 :quickstart-contributors: Sean Williams, Ryan Vanderwerf, and Andrew Glenn, AWS Quick Start team
-:deployment_time: 30 minutes / 1 hour
+:deployment_time: 30 minutes–1 hour
 :default_deployment_region: us-east-1
 :xrefstyle: short
 // Uncomment these two attributes if you are leveraging
