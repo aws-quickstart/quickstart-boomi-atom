@@ -15,3 +15,4 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * In the private subnets, a Dell Boomi Atom installed on an Amazon EC2 instance running Amazon Linux 2.
 * An Amazon Cloudwatch alarm for auto-recovery in case of instance failure.
 
+NOTE: Because of the limitations of single-use installation tokens, this Quick Start does not deploy Auto Scaling groups or load balancers. To deploy highly available Boomi Atom instances with multiple nodes and load balancing, consider deploying https://aws.amazon.com/quickstart/architecture/dell-boomi-molecule/[Boomi Molecule on AWS].
