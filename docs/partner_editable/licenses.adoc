@@ -1,0 +1,2 @@
+// Include details about the license and how they can sign up. If no license is required, clarify that.
+This Quick Start requires a Dell Boomi account. The Dell Boomi account you use to deploy this Quick Start will determine the licensing model that applies. Licensing costs are managed by Dell Boomi, and Dell Boomi applies standard connector metering charges to workloads using a Dell Boomi account. However, you can also use this Quick Start to deploy a Dell Boomi Atom server that will run trial or training workloads.
