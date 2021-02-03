@@ -3,7 +3,7 @@
 
 == Test the deployment
 
-To verify the deployment of the Atom in your Dell Boomi account, first log in to https://platform.boomi.com/[AtomSphere]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
+To verify the deployment of the Atom in your Dell Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
 
 [#unattached-atom]
 .Dell Boomi AtomSphere dashboard
@@ -13,13 +13,13 @@ image::../images/image3.png[unattached-atom,width=648,height=397]
 
 == Best practices for using {partner-product-short-name} on AWS
 
-The Atom that is deployed by this Quick Start can be managed from the Dell Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach] the Atom to environments and deploy processes to it.
+The Atom that is deployed by this Quick Start can be managed from the Dell Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
 
 :xrefstyle: short
-In <<deployed-atom>>, the Atom server is identified by the DNS name `ip-172-30-7.186.ec2.internal`. The account contains environments, one labeled *Production* and the other labeled *Test*.
+In <<deployed-atom>>, the Atom server is identified by the Domain Name System (DNS) name `ip-172-30-7.186.ec2.internal`. The account contains environments, one labeled *Production* and the other labeled *Test*.
 
 [#deployed-atom]
-.Dell Boomi Dashboard with an Unattached AWS-managed Atom server
+.Boomi AtomSphere dashboard with an unattached AWS-managed Atom server
 [link=images/image4.png]
 image::../images/image4.png[deployed-atom,width=648,height=258]
 
@@ -29,7 +29,7 @@ This Quick Start deploys a bastion host and a Dell Boomi Atom server into an AWS
 
 == Performance Monitoring
 
-Monitoring the CPU, network, and Amazon EBS performance of your Atom is done using CloudWatch metrics.
+Monitoring the CPU, network, and Amazon Elastic Block Store (Amazon EBS) performance of your Atom is done using CloudWatch metrics.
 
 CPU and network performance is measured in utilization, network in and out, network packets in and out, and system status checks.
 
@@ -46,11 +46,11 @@ Further monitoring of disk space and inode consumption must be performed at the 
 When deploying this Quick Start, you can specify a Dell Boomi AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
 
 [start=1]
-. Log in to https://platform.boomi.com/[Dell Boomi AtomSphere].
+. Log in to https://platform.boomi.com/[Dell Boomi AtomSphere^].
 . Select *Build*.
 . On the *Welcome* tab, select *Atom* under *Atom Runtime*.
 . In the *Atom Setup* window, select *Security Options*.
-. From the *Token Valid For* drop-down list, select the length of time for which the token should be valid.
+. From the *Token Valid For* dropdown list, select the length of time for which the token should be valid.
 . Select *Generate Token*.
 . Copy the token to the clipboard.
 . Select *Close*.
