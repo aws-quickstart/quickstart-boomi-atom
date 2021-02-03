@@ -2,7 +2,7 @@
 :partner-product-name: Dell Boomi Atom
 :partner-product-short-name: Dell Boomi Atom
 :partner-company-name: Dell Inc.
-:doc-month: January
+:doc-month: February
 :doc-year: 2021
 :quickstart-contributors: Sean Williams, Ryan Vanderwerf, and Andrew Glenn, AWS Quick Start team
 :deployment_time: 30 minutes–1 hour
