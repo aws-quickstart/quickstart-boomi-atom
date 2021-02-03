@@ -1,5 +1,5 @@
 
-.Network Configuration
+.Network configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|VPC ID
@@ -11,18 +11,18 @@
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|Boomi Atom instance type
-(`InstanceType`)|`m5.xlarge`|Instance type of the Boomi host. You can choose a different instance type from the drop-down list of instances that meet the requirements for running a Dell Boomi Atom server.|SSH key name
-(`KeyPairName`)|`**__Requires input__**`|A public/private key pair, which allows you to connect securely to your instance after it launches.|EBS volume size for Boomi Atom instance
-(`BoomiInstanceVolumeSize`)|`100`|Size of the Amazon EBS volume attached to the Atom instance. Size range is 1 GiB - 16 TiB.
+(`InstanceType`)|`m5.xlarge`|Boomi host instance type.|SSH key name
+(`KeyPairName`)|`**__Requires input__**`|Key pair that allows you to connect securely to your instance after it launches.|Amazon EBS volume size for Boomi Atom instance
+(`BoomiInstanceVolumeSize`)|`100`|Size of the Amazon EBS volume attached to the Atom instance. Size range is 1GiB–16TiB.
 |===
 .Dell Boomi Atom configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Atom Name
+|Parameter label (name) |Default value|Description|Atom name
 (`AtomName`)|`atom1`|Boomi Atom instance name.|Boomi account ID
-(`BoomiAccountID`)|`**__Requires input__**`|Dell Boomi account ID that you want to associate with the new Atom.|Boomi Username (not needed if authenticating via installation token)
-(`BoomiUsername`)|`**__Requires input__**`|Email account associated with the Dell Boomi account.|Boomi password
-(`BoomiPassword`)|`**__Requires input__**`|Boomi Account password.|Boomi installation token
+(`BoomiAccountID`)|`**__Requires input__**`|Boomi account ID to associate with the new Atom.|Boomi username
+(`BoomiUsername`)|`**__Requires input__**`|Boomi account username. (Not required if using a Boomi installation token.)|Boomi password
+(`BoomiPassword`)|`**__Requires input__**`|Boomi account password. (Not required if using a Boomi installation token.)|Boomi installation token
 (`BoomiInstallToken`)|`**__Blank string__**`|Boomi installation token.|Boomi install directory
-(`BoomiInstallDir`)|`/opt/boomi/`|Dell Boomi installation directory.
+(`BoomiInstallDir`)|`/opt/boomi/`|Boomi installation directory.
 |===
