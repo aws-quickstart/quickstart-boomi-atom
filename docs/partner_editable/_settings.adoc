@@ -1,0 +1,16 @@
+:quickstart-project-name: quickstart-boomi-atom
+:partner-product-name: Dell Boomi Atom
+:partner-product-short-name: Dell Boomi Atom
+:partner-company-name: Dell Inc.
+:doc-month: February
+:doc-year: 2021
+:quickstart-contributors: Sean Williams, Ryan Vanderwerf, and Andrew Glenn, AWS Quick Start team
+:deployment_time: 30 minutes–1 hour
+:default_deployment_region: us-east-1
+:xrefstyle: short
+:parameters_as_appendix:
+// Uncomment these two attributes if you are leveraging
+// - an AWS Marketplace listing.
+// Additional content will be auto-generated based on these attributes.
+// :marketplace_subscription:
+// :marketplace_listing_url: https://example.com/

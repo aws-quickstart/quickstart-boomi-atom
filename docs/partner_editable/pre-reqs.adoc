@@ -1,0 +1,7 @@
+// If no preperation is required, remove all content from here
+This Quick Start requires a Dell Boomi account. Also, to install Boomi Atom locally, you must have the following:
+
+* Dell Boomi AtomSphere login credentials (user name and password) with permissions to create Atoms.
+* A valid Boomi installer token that is compatible with Multi-Factor Authentication (MFA).
+
+For more information, see link:#_generating_a_boomi_installer_token[Generating a Boomi installer token], later in this guide.

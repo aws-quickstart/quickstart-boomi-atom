@@ -1,0 +1,5 @@
+// Replace the content in <>
+// Briefly describe the software. Use consistent and clear branding.
+// Include the benefits of using the software on AWS, and provide details on usage scenarios.
+
+Dell Boomi Atom is a a low-code iPaaS with pre-built connectors to integrate cloud and legacy data and applications. With Boomi integration, you can adopt AWS services quickly while continuing to operate in an environment that includes on-premises data.
