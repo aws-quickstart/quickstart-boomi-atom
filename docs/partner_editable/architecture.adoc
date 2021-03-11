@@ -15,7 +15,7 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 ** A managed network address translation (NAT) gateway to allow outbound internet access for resources in the private subnets.*
 ** A Linux bastion host to allow inbound SSH (Secure Shell) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in public and private subnets.*
 * In the private subnets, Dell Boomi Atom installed on an Amazon EC2 instance running Amazon Linux 2.
-* An Amazon CloudWatch alarm for instance recovery if there is a failure.
+* An Amazon CloudWatch alarm to monitor EC2 instances and initiate recovery actions if an instance fails.
 
 [.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
 
