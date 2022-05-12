@@ -3,17 +3,17 @@
 
 == Test the deployment
 
-To verify the deployment of the Atom in your Dell Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
+To verify the deployment of the Atom in your Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
 
 [#unattached-atom]
-.Dell Boomi AtomSphere dashboard
+ Boomi AtomSphere dashboard
 [link=images/image3.png]
 image::../images/image3.png[unattached-atom,width=648,height=397]
 
 
 == Best practices for using {partner-product-short-name} on AWS
 
-The Atom that is deployed by this Quick Start can be managed from the Dell Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
+The Atom that is deployed by this Quick Start can be managed from the Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
 
 :xrefstyle: short
 In <<deployed-atom>>, the Atom server is identified by the Domain Name System (DNS) name `ip-172-30-7.186.ec2.internal`. The account contains environments, one labeled *Production* and the other labeled *Test*.
@@ -25,7 +25,7 @@ image::../images/image4.png[deployed-atom,width=648,height=258]
 
 == Security
 
-This Quick Start deploys a bastion host and a Dell Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
+This Quick Start deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
 
 == Performance Monitoring
 
@@ -43,10 +43,10 @@ Further monitoring of disk space and inode consumption must be performed at the 
 
 == Generating a Boomi installer token
 
-When deploying this Quick Start, you can specify a Dell Boomi AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
+When deploying this Quick Start, you can specify a  Boomi AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
 
 [start=1]
-. Log in to https://platform.boomi.com/[Dell Boomi AtomSphere^].
+. Log in to https://platform.boomi.com/[ Boomi AtomSphere^].
 . Select *Build*.
 . On the *Welcome* tab, select *Atom* under *Atom Runtime*.
 . In the *Atom Setup* window, select *Security Options*.
