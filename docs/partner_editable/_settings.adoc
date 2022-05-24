@@ -1,7 +1,7 @@
 :quickstart-project-name: quickstart-boomi-atom
-:partner-product-name: Dell Boomi Atom
-:partner-product-short-name: Dell Boomi Atom
-:partner-company-name: Dell Inc.
+:partner-product-name: Boomi Atom
+:partner-product-short-name:  Boomi Atom
+:partner-company-name: Boomi
 :doc-month: March
 :doc-year: 2021
 //:partner-contributors:
