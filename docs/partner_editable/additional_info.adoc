@@ -25,7 +25,7 @@ image::../images/image4.png[deployed-atom,width=648,height=258]
 
 == Security
 
-This Quick Start deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
+This Quick Start deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command-line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
 
 == Performance Monitoring
 
