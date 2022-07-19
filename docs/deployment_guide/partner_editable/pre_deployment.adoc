@@ -1,0 +1,21 @@
+//Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
+
+== Predeployment steps
+
+This Quick Start requires a Boomi account. Also, to install Boomi Atom locally, you must have the following:
+
+* Boomi AtomSphere login credentials (user name and password) with permissions to create Atoms.
+* A valid Boomi installer token that is compatible with Multi-Factor Authentication (MFA).
+
+=== Generating a Boomi installer token
+
+When deploying this Quick Start, you can specify a Boomi AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
+
+. Log in to Boomi AtomSphere.
+. Select *Build*.
+. On the Welcome tab, select *Atom* under *Atom Runtime*.
+. In the *Atom Setup* window, select *Security Options*.
+. From the *Token Valid For* dropdown list, select the length of time for which the token should be valid.
+. Select *Generate Token*.
+. Copy the token to the clipboard.
+. Select *Close*.
