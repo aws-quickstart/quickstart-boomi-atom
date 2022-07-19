@@ -1,2 +1,5 @@
-// Include details about the license and how they can sign up. If no license is required, clarify that.
+// Include details about any licenses and how to sign up. Provide links as appropriate.
+
 This Quick Start requires a Boomi account. The Boomi account you use to deploy this Quick Start will determine the licensing model that applies. Licensing costs are managed by  Boomi, and Boomi applies standard connector metering charges to workloads using a  Boomi account. However, you can also use this Quick Start to deploy a Boomi Atom server that will run trial or training workloads.
+
+There is no cost to use this Quick Start, but you will be billed for any AWS services or resources that this Quick Start deploys. For more information, refer to the https://fwd.aws/rA69w?[AWS Quick Start General Information Guide^].

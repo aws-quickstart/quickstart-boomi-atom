@@ -1,6 +1,0 @@
-
-=== Launch into a new VPC
-include::boomi-atom-main.template.adoc[]
-
-=== Launch into an existing VPC
-include::boomi-atom.template.adoc[]

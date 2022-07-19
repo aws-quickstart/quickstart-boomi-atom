@@ -1,17 +1,17 @@
-// Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
-//Should any sections not be applicable, remove them
+// Include any postdeployment steps here, such as steps necessary to test that the deployment was successful. If there are no postdeployment steps, leave this file empty.
 
-== Test the deployment
+== Postdeployment steps
+
+=== Test the deployment
 
 To verify the deployment of the Atom in your Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
 
 [#unattached-atom]
  Boomi AtomSphere dashboard
 [link=images/image3.png]
-image::../images/image3.png[unattached-atom,width=648,height=397]
+image::../docs/deployment_guide/images/image3.png[unattached-atom,width=648,height=397]
 
-
-== Best practices for using {partner-product-short-name} on AWS
+=== Best practices for using {partner-product-short-name} on AWS
 
 The Atom that is deployed by this Quick Start can be managed from the Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
 
@@ -21,13 +21,13 @@ In <<deployed-atom>>, the Atom server is identified by the Domain Name System (D
 [#deployed-atom]
 .Boomi AtomSphere dashboard with an unattached AWS-managed Atom server
 [link=images/image4.png]
-image::../images/image4.png[deployed-atom,width=648,height=258]
+image::../docs/deployment_guide/images/image4.png[deployed-atom,width=648,height=258]
 
-== Security
+=== Security
 
 This Quick Start deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command-line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
 
-== Performance Monitoring
+=== Performance Monitoring
 
 Monitoring the CPU, network, and Amazon Elastic Block Store (Amazon EBS) performance of your Atom is done using CloudWatch metrics.
 
@@ -40,17 +40,3 @@ Further monitoring of disk space and inode consumption must be performed at the 
 // [#perf-monitoring]
 // [link=images/image6.png]
 // image::../images/image6.png[image,width=648,height=220]
-
-== Generating a Boomi installer token
-
-When deploying this Quick Start, you can specify a  Boomi AtomSphere username and password or a valid Boomi installer token, depending on how you want to authenticate the Atom. To generate an installer token, do the following:
-
-[start=1]
-. Log in to https://platform.boomi.com/[ Boomi AtomSphere^].
-. Select *Build*.
-. On the *Welcome* tab, select *Atom* under *Atom Runtime*.
-. In the *Atom Setup* window, select *Security Options*.
-. From the *Token Valid For* dropdown list, select the length of time for which the token should be valid.
-. Select *Generate Token*.
-. Copy the token to the clipboard.
-. Select *Close*.
