@@ -1,0 +1,14 @@
+:quickstart-project-name: quickstart-boomi-atom
+:quickstart-github-org: aws-quickstart
+:partner-product-name: Boomi Atom
+:partner-product-short-name: Boomi Atom
+:partner-company-name: Boomi
+:doc-month: July
+:doc-year: 2022
+//:partner-contributors: John Smith, {partner-company-name}
+// :other-contributors: Akua Mansa, Trek10
+:aws-contributors: Sean Williams and Ryan Vanderwerf, AWS ISV Partner Management team
+:aws-ia-contributors: Andrew Glenn, AWS Integration & Automation team
+:deployment_time: 30 minutes
+:default_deployment_region: us-east-1
+// :private_repo:

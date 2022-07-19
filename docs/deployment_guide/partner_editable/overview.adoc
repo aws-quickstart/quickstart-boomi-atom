@@ -1,0 +1,7 @@
+This Quick Start reference deployment guide walks you through the steps for deploying Boomi Atom on the AWS Cloud. It does not require deep knowledge of AWS or Linux system administration.
+
+This Quick Start is for users who are looking for an integration platform as a service (iPaaS) solution hosted on the AWS Cloud. With it, you can deploy Boomi Atom on AWS and administer it through the Boomi Atom AtomSphere platform.
+
+// For advanced information about the product, troubleshooting, or additional functionality, refer to the https://{quickstart-github-org}.github.io/{quickstart-project-name}/operational/index.html[Operational Guide^].
+
+// For information about using this Quick Start for migrations, refer to the https://{quickstart-github-org}.github.io/{quickstart-project-name}/migration/index.html[Migration Guide^].
