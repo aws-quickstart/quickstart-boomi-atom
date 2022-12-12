@@ -4,7 +4,7 @@
 
 === Test the deployment
 
-To verify the deployment of the Atom in your Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Quick Start is displayed under *Unattached Atoms*.
+To verify the deployment of the Atom in your Boomi account, first log in to https://platform.boomi.com/[AtomSphere^]. On the *Manage* menu, select *Atom Management*. The new Atom deployed by this Partner Solution is displayed under *Unattached Atoms*.
 
 [#unattached-atom]
  Boomi AtomSphere dashboard
@@ -13,7 +13,7 @@ image::../docs/deployment_guide/images/image3.png[unattached-atom,width=648,heig
 
 === Best practices for using {partner-product-short-name} on AWS
 
-The Atom that is deployed by this Quick Start can be managed from the Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
+The Atom that is deployed by this Partner Solution can be managed from the Boomi AtomSphere dashboard. From the AtomSphere dashboard, you can https://help.boomi.com/bundle/integration/page/t-atm-Attaching_an_Atom_to_an_Enviro.html[attach^] the Atom to environments and deploy processes to it.
 
 :xrefstyle: short
 In <<deployed-atom>>, the Atom server is identified by the Domain Name System (DNS) name `ip-172-30-7.186.ec2.internal`. The account contains environments, one labeled *Production* and the other labeled *Test*.
@@ -25,7 +25,7 @@ image::../docs/deployment_guide/images/image4.png[deployed-atom,width=648,height
 
 === Security
 
-This Quick Start deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command-line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
+This Partner Solution deploys a bastion host and a Boomi Atom server into an AWS VPC. The bastion host is the only means of accessing the Atom at a command-line level. The Atom is deployed into a private subnet and cannot be reached through the internet. It communicates through a NAT gateway for updates and patches.
 
 === Performance Monitoring
 
