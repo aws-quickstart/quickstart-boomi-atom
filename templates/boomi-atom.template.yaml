@@ -105,58 +105,6 @@ Parameters:
     Description: Boomi installation token.
     Type: String
     Default: ''
-Mappings:
-  AWSAMIRegionMap:
-    ap-northeast-1:
-      AMZNLINUX2HVM: ami-08928044842b396f0
-    ap-northeast-2:
-      AMZNLINUX2HVM: ami-035da6a0773842f64
-    ap-south-1:
-      AMZNLINUX2HVM: ami-025b4b7b37b743227
-    ap-southeast-1:
-      AMZNLINUX2HVM: ami-054c486632a4875d3
-    ap-southeast-2:
-      AMZNLINUX2HVM: ami-00fde50da249b5ff7
-    ca-central-1:
-      AMZNLINUX2HVM: ami-0c2873e3b54c2e536
-    eu-central-1:
-      AMZNLINUX2HVM: ami-004359656ecac6a95
-    eu-west-1:
-      AMZNLINUX2HVM: ami-0ab040d0c6b04cf83
-    eu-west-2:
-      AMZNLINUX2HVM: ami-0b2d89eba83fd3ed9
-    eu-west-3:
-      AMZNLINUX2HVM: ami-074a67c627cfb0c37
-    sa-east-1:
-      AMZNLINUX2HVM: ami-0170003d0dfd31d1a
-    us-east-1:
-      AMZNLINUX2HVM: ami-06a0cd9728546d178
-    us-east-2:
-      AMZNLINUX2HVM: ami-083eed19fc801d7a4
-    us-west-1:
-      AMZNLINUX2HVM: ami-087bf433bedbc2ef7
-    us-west-2:
-      AMZNLINUX2HVM: ami-01acac09adf473073
-    eu-north-1:
-      AMZNLINUX2HVM: ami-08fdff97845b0d82e
-    ap-east-1:
-      AMZNLINUX2HVM: ami-03bfc93e0be13a77f
-    me-south-1:
-      AMZNLINUX2HVM: ami-043043d55764f1999
-    af-south-1:
-      AMZNLINUX2HVM: ami-064edf8c6f192e9e4
-    eu-south-1:
-      AMZNLINUX2HVM: ami-078467b04d13aff4c
-    ap-northeast-3:
-      AMZNLINUX2HVM: ami-0c8a89b455fae8513
-    us-gov-east-1:
-      AMZNLINUX2HVM: ami-0e7e977f
-    us-gov-west-1:
-      AMZNLINUX2HVM: ami-acbd84cd
-    cn-north-1:
-      AMZNLINUX2HVM: ami-0f30329b403b2cd2f
-    cn-northwest-1:
-      AMZNLINUX2HVM: ami-0b9e03ed3ef793940
 Rules:
   PasswordOrMFAToken:
     Assertions:
@@ -209,11 +157,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref 'AtomName'
-      ImageId:
-        !FindInMap
-        - AWSAMIRegionMap
-        - Ref: AWS::Region
-        - AMZNLINUX2HVM
+      ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2}}'
       InstanceType:
         Ref: InstanceType
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
