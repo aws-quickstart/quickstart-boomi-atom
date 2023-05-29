@@ -88,11 +88,9 @@ Parameters:
     Type: String
     Default: m5.xlarge
     AllowedValues:
-      - m4.xlarge
       - m5.xlarge
       - m5.2xlarge
       - m5.4xlarge
-      - r4.xlarge
       - r5.xlarge
       - c5.xlarge
       - c5.2xlarge
