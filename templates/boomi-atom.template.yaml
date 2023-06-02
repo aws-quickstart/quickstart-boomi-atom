@@ -243,7 +243,7 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
-        - !Sub arn:aws:automate:${AWS::Region}:ec2:recover
+        - !Sub arn:${AWS::Partition}:automate:${AWS::Region}:ec2:recover
       AlarmDescription: Recover instance if its status checks fail.
       Namespace: AWS/EC2
       MetricName: StatusCheckFailed_System
