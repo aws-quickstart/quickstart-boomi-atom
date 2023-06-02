@@ -88,11 +88,13 @@ Parameters:
     Type: String
     Default: m5.xlarge
     AllowedValues:
-      - m4.xlarge
       - m5.xlarge
-      - r4.xlarge
+      - m5.2xlarge
+      - m5.4xlarge
       - r5.xlarge
       - c5.xlarge
+      - c5.2xlarge
+      - c5.4xlarge
   BoomiInstanceVolumeSize:
     Description: Size of the Amazon EBS volume attached to the Atom instance. Size range is 1GiB–16TiB.
     Type: Number
@@ -138,7 +140,7 @@ Parameters:
     Type: String
     NoEcho: true
   BoomiAccountID:
-    Description: ID of the Dell Boomi account to associate with the new Atom.
+    Description: ID of the Boomi account to associate with the new Atom.
     Type: String
   BoomiInstallToken:
     Description: Boomi installation token.

@@ -63,11 +63,9 @@ Parameters:
     Type: String
     Default: m5.xlarge
     AllowedValues:
-      - m4.xlarge
       - m5.xlarge
       - m5.2xlarge
       - m5.4xlarge
-      - r4.xlarge
       - r5.xlarge
       - c5.xlarge
       - c5.2xlarge
@@ -105,58 +103,6 @@ Parameters:
     Description: Boomi installation token.
     Type: String
     Default: ''
-Mappings:
-  AWSAMIRegionMap:
-    ap-northeast-1:
-      AMZNLINUX2: ami-0ce107ae7af2e92b5
-    ap-northeast-2:
-      AMZNLINUX2: ami-03b42693dc6a7dc35
-    ap-south-1:
-      AMZNLINUX2: ami-0e306788ff2473ccb
-    ap-southeast-1:
-      AMZNLINUX2: ami-015a6758451df3cb9
-    ap-southeast-2:
-      AMZNLINUX2: ami-0f96495a064477ffb
-    ca-central-1:
-      AMZNLINUX2: ami-0c2f25c1f66a1ff4d
-    eu-central-1:
-      AMZNLINUX2: ami-00a205cb8e06c3c4e
-    eu-west-1:
-      AMZNLINUX2: ami-0bb3fad3c0286ebd5
-    eu-west-2:
-      AMZNLINUX2: ami-0a669382ea0feb73a
-    eu-west-3:
-      AMZNLINUX2: ami-0de12f76efe134f2f
-    sa-east-1:
-      AMZNLINUX2: ami-02898a1921d38a50b
-    us-east-1:
-      AMZNLINUX2: ami-0947d2ba12ee1ff75
-    us-east-2:
-      AMZNLINUX2: ami-03657b56516ab7912
-    us-west-1:
-      AMZNLINUX2: ami-0e4035ae3f70c400f
-    us-west-2:
-      AMZNLINUX2: ami-0528a5175983e7f28
-    eu-north-1:
-      AMZNLINUX2: ami-0653812935d0743fe
-    ap-east-1:
-      AMZNLINUX2: ami-814d0ff0
-    me-south-1:
-      AMZNLINUX2: ami-08155c9ee8b845e35
-    af-south-1:
-      AMZNLINUX2: ami-0cec12e29ebe3f0d5
-    eu-south-1:
-      AMZNLINUX2: ami-0759301b88845d121
-    ap-northeast-3:
-      AMZNLINUX2: ami-024125eb5035fd485
-    us-gov-east-1:
-      AMZNLINUX2: ami-0e7e977f
-    us-gov-west-1:
-      AMZNLINUX2: ami-acbd84cd
-    cn-north-1:
-      AMZNLINUX2: ami-0f30329b403b2cd2f
-    cn-northwest-1:
-      AMZNLINUX2: ami-0b9e03ed3ef793940
 Rules:
   PasswordOrMFAToken:
     Assertions:
@@ -195,6 +141,13 @@ Resources:
         ToPort: 22
   AtomInstanceEBS:
     Type: AWS::EC2::Volume
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - EBSVolumeEncryption
+          ignore_reasons:
+            - EBSVolumeEncryption: "Ignore invalid check"
     Properties:
       Size: !Ref BoomiInstanceVolumeSize
       Encrypted: true
@@ -209,11 +162,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref 'AtomName'
-      ImageId:
-        !FindInMap
-        - AWSAMIRegionMap
-        - Ref: AWS::Region
-        - AMZNLINUX2
+      ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2}}'
       InstanceType:
         Ref: InstanceType
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
@@ -294,7 +243,7 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
-        - !Sub arn:aws:automate:${AWS::Region}:ec2:recover
+        - !Sub arn:${AWS::Partition}:automate:${AWS::Region}:ec2:recover
       AlarmDescription: Recover instance if its status checks fail.
       Namespace: AWS/EC2
       MetricName: StatusCheckFailed_System
