@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Boomi Atom installation script. This creates a VPC, public and private subnets, and deploys a Dell Boomi Atom. (qs-1r0e5j27q)
+Description: Boomi Atom installation script. This creates a VPC, public and private subnets, and deploys a Boomi Atom. (qs-1r0e5j27q)
 Metadata:
   QuickStartDocumentation:
     EntrypointName: Launch into a new VPC
@@ -25,7 +25,7 @@ Metadata:
           - BoomiInstanceVolumeSize
       -
         Label:
-          default: Dell Boomi Atom configuration
+          default: Boomi Atom configuration
         Parameters:
          - AtomName
          - BoomiAccountID
